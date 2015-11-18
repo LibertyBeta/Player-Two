@@ -1,0 +1,103 @@
+<div class="container play">
+  <pt-top></pt-top>
+  <pt-condtions ng-show="showConditons"></pt-condtions>
+  <div class="overlay" ng-show="game.battle && noInit()">
+    <div class="body">
+      <h2> READY FOR COMBAT! </h2>
+      <form ng-submit="readUp()">
+        <input type='number' ng-model='battle.roll' placeholder="Initi">
+        <button ng-click="setInit();"> Initiative </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="overlay" ng-show="healthDialog">
+    <div class="body">
+      <h2> Make a large change</h2>
+      <button class="negative" hm-tap="decreaseHealth(nButton.amount)" ng-repeat="nButton in healthNegButtons">{{nButton.text}}</button>
+      <button class="positive" ng-repeat="pButton in healthPosButtons" hm-tap="increaseHealth(pButton.amount)"> {{pButton.text}}</button>
+    </div>
+  </div>
+
+  <div id="add-player" ng-hide="playerRecord">
+    <header>Add Player</header>
+    <div class="form">
+      <form ng-submit="joinGame()">
+        <input type="text" ng-model="player.name" required placeholder="You Character Name">
+        <input type="number" ng-model="player.currentHealth" required placeholder="Current Health">
+        <input type="number" ng-model="player.maxHealth" required placeholder="Max Health">
+        <input type="text" ng-model="player.recovery" ng-required="!$root.currentUser" ng-show="!$root.currentUser" placeholder="Recovery Passcode">
+        <!-- <input type="hidden" ng-model="player.gameId"> -->
+        <button> Join </button>
+      </form>
+    </div>
+    <span class="or" ng-hide="$root.currentUser"> or </span>
+    <div class="form" ng-hide="$root.currentUser">
+      <form ng-submit="returnToGame()">
+        <input type="text" ng-model="recovery.playerName" required placeholder="Recovery Name">
+        <input type="text" ng-model="recovery.recovery" required placeholder="Recovery Passcode">
+        <button> Recover Player </button>
+      </form>
+    </div>
+  </div>
+  <div class="player" ng-show="playerRecord">
+    <div class="details">
+      <span id="name"> {{playerRecord.name}} </span>
+      <span id="health"> {{ playerRecord.tempHealth.currentHealth + " " + playerRecord.currentHealth + "/" + playerRecord.maxHealth}} </span>
+    </div>
+    <div class="health-bar big">
+      <div class="bar" ng-class="barColor(playerRecord.currentHealth,playerRecord.maxHealth)">
+        <div class="hit" style="width:{{health(playerRecord.maxHealth, (playerRecord.maxHealth - playerRecord.currentHealth))}}"></div>
+        <div class="hit temp" style="width:{{health(playerRecord.tempHealth.maxHealth, playerRecord.tempHealth.currentHealth)}}"></div>
+      </div>
+    </div>
+    <div class="conditions">
+      <div ng-repeat="ourCondition in playerRecord.conditions | filter:{name: '!!'}" ng-click="popCondition(ourCondition)">{{ourCondition.name}}</div>
+    </div>
+    <div class="controls">
+      <div class="temp" ng-show="temp">
+        <input type="number" ng-model="tempInput">
+        <button ng-click="setTemp()">Set</button>
+      </div>
+      <div class="negative">
+        <!-- <button ng-click="decreaseHealth(10)"> - 10 </button> -->
+        <!-- <button ng-click="decreaseHealth(1)"> - </button> -->
+        <button hm-tap="decreaseHealth(1)" hm-press="healthDialogShow('loss')"></button>
+      </div>
+      <div class="positive">
+        <!-- <button ng-click="increaseHealth(1)"> + </button> -->
+        <!-- <button ng-click="increaseHealth(10)"> + 10</button> -->
+        <button hm-tap="increaseHealth(1)" hm-press="healthDialogShow('gain')"></button>
+      </div>
+      <div class="nutural">
+        <button class="nutural" ng-click="temporaryForm()">Temporary Hitpoints</button>
+        <button class="nutural" ng-click="showConditons = true;" >Add Condition</button>
+      </div>
+      <div class="init" ng-hide="game.battle">
+        <button class="nutural" ng-click="initInit()">Initiative</button>
+      </div>
+      <div class="leave">
+        <button ng-click="leave()">Leave Game</button>
+      </div>
+    </div>
+
+    <div id="battle" ng-show="game.battle">
+      <div class="messages">
+        <ul>
+          <li class="position-block" ng-repeat="partyMember in players"><div class="marker" ng-show="partyMember._id == playerId"></div></li>
+        </ul>
+      </div>
+      <div class="controls" ng-show="battlePosition() == 1">
+        <button ng-click="endRound()"> COMPLETE ROUND </button>
+        <button ng-click="endBattle()"> End Fight </button>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div>
+    <pt-plate ng-repeat="partyMember in players" ng-if="partyMember._id!=playerId">
+
+    </pt-plate>
+  </div>
+  <!-- {{gameId}} -->
+</div>

@@ -1,0 +1,23 @@
+#top-bar{
+  @include span-columns(12);
+  // @include omega();
+  background-color: $topBar;
+  color: $white;
+  title{
+    text-align: center;
+    @include span-columns(8);
+  }
+  .login{
+    text-align: right;
+    @include span-columns(2);
+    #login-dropdown-list{
+      // float:right;
+      // position: relative;
+      left: -205px;
+
+    }
+  }
+  .nav{
+    @include span-columns(1);
+  }
+}

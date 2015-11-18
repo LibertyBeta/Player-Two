@@ -1,0 +1,454 @@
+//values
+@import '_variables';
+@import '_mixins';
+@import "{wolves:bourbon}/bourbon";
+@import "{wolves:neat}/neat";
+
+//Page specific styles
+@import '_home';
+@import '_top';
+
+body, html, .container{
+	margin: 0;
+	padding: 0;
+	@include fill-parent();
+	height: 100%;
+	background-color: $background;
+
+}
+
+#view{
+	height: 100%;
+	.play{
+		background-color: white;
+	}
+}
+
+.banner{
+
+	height: 13em;
+	@include span-columns(12);
+	@include omega();
+	background: url("images/header.png") center no-repeat;
+	background-size:cover;
+	color: $white;
+	margin-bottom: 1em;
+	h1{
+		text-align: center;
+		font-size: 3em;
+	}
+	h3{
+		text-align: center;
+	}
+}
+
+.grid{
+
+	@include border-top-radius(5px);
+	@include border-right-radius(5px);
+	@include border-bottom-radius(5px);
+	@include border-left-radius(5px);
+	@include border-color(darken($grid, 10%));
+	@include border-style(solid);
+	@include border-width(3px);
+	@include outer-container;
+	background-color: $grid;
+	overflow: hidden;
+	.side-bar{
+		padding: 5px;
+		@include span-columns(3);
+		@include media(min-width $small max-width $medium, 6) {
+			@include span-columns(12);
+		}
+		@include media(max-width $small, 6) {
+			@include span-columns(12);
+		}
+
+	}
+
+	.content{
+		@include span-columns(9);
+		@include omega();
+		.news{
+			@include span-columns(6);
+			@include media(min-width $small max-width $medium, 6) {
+				@include span-columns(12);
+			}
+			@include media(max-width $small, 6) {
+				@include span-columns(12);
+			}
+		}
+		.join{
+			@include span-columns(6);
+			@include media(min-width $small max-width $medium, 6) {
+				@include span-columns(12);
+			}
+			@include media(max-width $small, 6) {
+				@include span-columns(12);
+			}
+			a{
+				@include buttonFactory(1.5em, 50%, $positive, 2px, 2px);
+				text-decoration: none;
+			}
+		}
+	}
+
+}
+
+.form{
+	@include outer-container;
+	.user-form{
+		@include border-top-radius(5px);
+		@include border-right-radius(5px);
+		@include border-bottom-radius(5px);
+		@include border-left-radius(5px);
+		@include border-color(darken($grid, 10%));
+		@include border-style(solid);
+		@include border-width(3px);
+		@include outer-container;
+		background-color: $grid;
+		overflow: hidden;
+		@include span-columns(4);
+		@include shift(4);
+		@include media(min-width $small max-width $medium, 6) {
+			@include shift(0);
+			@include span-columns(12);
+		}
+		@include media(max-width $small, 6) {
+			@include shift(0);
+			@include span-columns(12);
+		}
+		p{
+			label{
+				padding-left: 0.5em;
+				@include span-columns(5);
+
+				@include media(min-width $small max-width $medium, 6) {
+
+					@include span-columns(12);
+				}
+				@include media(max-width $small, 6) {
+
+					@include span-columns(12);
+				}
+			}
+		}
+		.button{
+			@include buttonFactory(1.5em, '', $positive, 2px, 2px);
+		}
+	}
+}
+
+#add-player{
+	background-color: darken($plates, 20);
+	border-radius: 5px;
+	padding: 3px;
+	border: $plates 3px solid;
+	@include span-columns(6);
+	@include shift(3);
+	@include omega;
+	input{
+		border: none;
+		border-bottom: 1px solid $plates;
+		background: transparent;
+		@include span-columns(3);
+		@include placeholder {
+			color: lighten($plates, 20);
+		}
+	}
+
+	button{
+		@include buttonFactory(1.5em, 50%, $nutural, 2px, 2px);
+		@include span-columns(3);
+	}
+}
+
+.player-plate{
+	-webkit-user-select: none;
+	@include bar(20px, 100%);
+	background-color: darken($plates, 20);
+	border-radius: 5px;
+	border: $plates 3px solid;
+	// display: inline-block;
+	width: 20%;
+	margin: 2%;
+	padding: 1%;
+	padding-bottom:0;
+	@include span-columns(2 of 6);
+	@include media(min-width $small max-width $medium, 6) {
+		@include span-columns(2 of 4);
+		// display: inline-block;
+		width: 39%;
+		padding-left: 3%;
+		padding-right: 3%;
+		margin-left: 2%;
+		margin-right: 2%;
+	}
+	@include media(max-width $small, 6) {
+		width: 100%;
+		// @include span-columns(12 of 12);
+		// @include omega();
+		// display: inline-block;
+
+		padding-left: 2%;
+		margin-right: 0 !important;
+		padding-right: 2%;
+		margin-left: 0 !important;
+	}
+	.conditions{
+		overflow: hidden;
+		height: 1.5em;
+		margin-top: 1%;
+		margin-bottom: 1%;
+		div{
+
+			float:left;
+			margin-right: 3px;
+			@include buttonFactory(1.5em, '', $negative, 2px, 2px);
+			// @include span-columns(1);
+		}
+	}
+
+}
+
+.player{
+	@include span-columns(12);
+	@include omega;
+	@include bar(50px, 100%);
+	.health-bar {
+		-webkit-border-bottom-left-radius: 0;
+		-webkit-border-bottom-right-radius: 0;
+		-moz-border-bottom-left-radius: 0;
+		-moz-border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	.details{
+		display: inline-block;
+		width: 100%;
+		height: 1.5em;
+		font-weight: bold;
+		#name{
+			float:left;
+		}
+		#health{
+			float:right;
+		}
+	}
+	.conditions{
+		height: 1.6em;
+		background-color: $plates;
+		div{
+			float:left;
+			@include buttonFactory(1.5em, '', $negative, 2px, 2px);
+			margin-left: 2px;
+			// @include span-columns(1);
+		}
+	}
+
+	.controls{
+		@include fill-parent();
+
+		padding-left: 1%;
+		padding-right: 1%;
+		button{
+			margin-bottom: 2px;
+		}
+		div{
+			margin-top:5px;
+		}
+		.positive{
+			// display: inline-block;
+			// vertical-align: top;
+			@include span-columns(1);
+			// @include omega;
+			button{
+				@include buttonFactory(45px, 100%, $positive, 2px, 2px);
+			}
+			@media screen and (max-width : $small) {
+				@include span-columns(6);
+				button{
+						float:left;
+				}
+				@include omega();
+			}
+			@media screen and (max-width: $medium) and (min-width: $small) {
+				@include span-columns(6);
+				@include omega();
+			}
+		}
+		.negative{
+			// display: inline-block;
+			// vertical-align: top;
+			@include span-columns(1);
+			// @include omega();
+			button{
+				@include buttonFactory(45px, 100%, $negative, 2px, 2px);
+			}
+			@media screen and (max-width : $small) {
+				@include span-columns(6);
+				// @include omega();
+			}
+			@media screen and (max-width: $medium) and (min-width: $small) {
+				@include span-columns(6);
+
+
+			}
+		}
+		.nutural{
+			display: inline-block;
+			// vertical-align: top;
+			@include span-columns(4);
+			// @include omega;
+			button{
+				@include buttonFactory(45px, 50%, $nutural, 2px, 2px);
+				@include span-columns(6);
+			}
+			@media screen and (max-width : $small) {
+				@include span-columns(12);
+				@include omega();
+				button{
+					@include span-columns(6);
+					// width:100%;
+				}
+			}
+			@media screen and (max-width: $medium) and (min-width: $small) {
+				@include span-columns(12);
+				button{
+						@include span-columns(6)
+						// @include omega();
+				}
+				// float:right;
+			}
+		}
+
+		.init{
+			// display: inline-block;
+			// vertical-align: top;
+			@include span-columns(2);
+			// @include omega;
+			button{
+				@include buttonFactory(45px, 100%, $nutural, 2px, 2px);
+			}
+			@media screen and (max-width : $small) {
+				@include span-columns(12);
+				display: inline-block;
+				button{
+					// float:right;
+				}
+			}
+			@media screen and (max-width: $medium) and (min-width: $small) {
+				@include span-columns(12);
+				display: inline-block;
+			}
+		}
+
+		.temp{
+			width: 100%;
+			height: 1.5em;
+			input{
+				// width:75%;
+			}
+			button{
+				float: right;
+				@include buttonFactory(20px, 24%, $nutural, 2px, 2px);
+			}
+		}
+		.leave{
+			display: inline-block;
+			vertical-align: top;
+			@include span-columns(2);
+			@include omega;
+			button{
+				@include hazardButtonFactory(45px, 100%, $warning, 2px, 2px);
+			}
+			@media screen and (max-width : $small) {
+				@include span-columns(12);
+				// display: inline-block;
+
+			}
+			@media screen and (max-width: $medium) and (min-width: $small) {
+				@include span-columns(12);
+				// display: inline-block;
+			}
+		}
+	}
+
+	#battle{
+		@include span-columns(12);
+		.messages{
+			padding-left: 1%;
+			padding-right: 1%;
+			ul {
+				list-style: none;
+				padding:0;
+				display: inline;
+				li.position-block{
+					display: inline-block;
+					width: 24px;
+					height: 24px;
+					background: gray;
+					padding:4px;
+					margin: 1px;
+					.marker{
+						background: red;
+						height: 100%;
+						width: 100%;
+
+					}
+				}
+			}
+		}
+		.controls{
+			@include span-columns(12);
+			button{
+				-webkit-animation-name: battlePulse;
+  			-webkit-animation-duration: 2s;
+  			-webkit-animation-iteration-count: infinite;
+				@include buttonFactory(45px, 100%, $battle, 2px, 2px);
+				@include span-columns(6);
+			}
+		}
+	}
+}
+@-webkit-keyframes battlePulse {
+  from { background-color: $battle;border: 2px solid darken($battle, 20%);color: darken($battle, 35%);}
+  50% { background-color: darken($battle, 30%);border: 2px solid darken($battle, 50%);color: lighten($battle, 35%);}
+  to { background-color: $battle;border: 2px solid darken($battle, 20%);color: darken($battle, 35%);}
+}
+
+.overlay{
+	z-index: 10000;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(red($white), green($white), blue($white),  0.7);
+
+	.body{
+		// opacity: 1;
+		position: absolute;
+		z-index: 10001;
+		background: $white;
+		border-radius: 5px;
+		border: 1px solid darken($white, 20%);
+		margin-top: 3em;
+		left: 50%;
+	  transform: translate(-50%, 0);
+		padding: 0.5em;
+		button{
+			display: block;
+			@include hazardButtonFactory(35px, 100%, $negative, 2px, 2px);
+			&.positive{
+				margin-bottom: 1px;
+				background:none;
+				@include buttonFactory(45px, 100%, $positive, 2px, 2px);
+			}
+			&.negative{
+				margin-bottom: 1px;
+				background:none;
+				@include buttonFactory(45px, 100%, $negative, 2px, 2px);
+			}
+		}
+	}
+}

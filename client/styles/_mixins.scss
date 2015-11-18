@@ -1,0 +1,83 @@
+@mixin bar($height, $width) {
+	.health-bar {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		width: $width;
+		height: $height;
+		padding: 5px;
+		background: #ddd;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		position: relative;
+	}
+	.bar {
+		// background: #c54;
+		width: 100%;
+		height: $height - 10px;
+		position: relative;
+		transition: width .3s linear;
+		&.good{
+			background:$goodHealth;
+		}
+		&.warning{
+			background:$warningHealth;
+		}
+		&.danger{
+			background:$dangerHealth;
+		}
+	}
+
+
+
+	.hit {
+		background: rgba(255,255,255,0.6);
+		// display: none;
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: $height - 10px;
+		width: 0px;
+
+		transition: width .3s linear;
+			&.temp{
+				left:0;
+				background: $nutural;
+			}
+	}
+
+}
+
+@mixin buttonFactory($height, $width, $color, $border, $radius){
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	height: $height;
+	width: $width;
+	border: $border solid darken($color, 20%);
+	color: darken($color, 35%);
+	font-weight: bold;
+	border-radius: $radius;
+	background-color: $color;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select:none;
+	user-select:none;
+	-o-user-select:none;
+}
+
+@mixin hazardButtonFactory($height, $width, $color, $border, $radius){
+	-webkit-user-select: none;
+	font-size: large;
+	height: $height;
+	width: $width;
+	border: $border solid darken($color, 20%);
+	border-radius: $radius;
+	background: repeating-linear-gradient(
+	  45deg,
+	  $color,
+	  $color 10px,
+	  darken($color, 20%) 10px,
+	  darken($color, 20%) 20px
+	);
+}

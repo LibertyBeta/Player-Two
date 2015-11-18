@@ -1,0 +1,27 @@
+$positive : #5bd55d;
+$negative : #d5695b;
+$nutural : #695bd5;
+$warning: #ff971b;
+$plates: #ddd;
+$white: white;
+$battle: #c0fb19;
+$topBar: darken($plates, 40%);
+$grid: #e0e0e0;
+$background: #dfdce6;
+//SIZES
+$small : 480px;
+$medium : 992px;
+//health
+$goodHealth:#1dfb42;
+$warningHealth:#d6fb1d;
+$dangerHealth:#fb421d;
+//grid setup
+$pad: 20px;
+
+$conditons: "posion","exhaust","prone","blind";
+
+//breakpoints
+$mobile: new-breakpoint(max-width $small 4);
+$smallscreen: new-breakpoint(max-width $medium);
+
+$visual-grid: true;

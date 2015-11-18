@@ -1,0 +1,22 @@
+.games{
+  @include span-columns(12);
+  @include omega();
+  .game-list{
+    @include span-columns(6);
+  }
+  .controls{
+    @include span-columns(6);
+    #add{
+      background-color: $plates;
+      border: 5px solid #ff98cc;
+      height: 2em;
+      width: 100%;
+      @include span-columns(6);
+      @include shift(3);
+      span{
+        @include buttonFactory(1.5em, 100%, $nutural, 2px, 2px);
+      }
+    }
+    #join{}
+  }
+}
