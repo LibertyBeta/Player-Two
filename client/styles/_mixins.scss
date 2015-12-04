@@ -81,3 +81,11 @@
 	  darken($color, 20%) 20px
 	);
 }
+
+@mixin borderThis($color, $radius){
+	-webkit-background-clip: padding-box;
+	 background-clip: padding-box;
+	border: $radius solid lighten($color, 10%);
+	background: $color;
+	border-radius: $radius;
+}
