@@ -3,7 +3,7 @@ angular.module('player-tracker',['angular-meteor', 'ui.router', 'ngTouch','hmTou
 angular.module('player-tracker').run(['$rootScope', '$state', function($rootScope, $state) {
 	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, rejection) {
 		if (rejection === 'AUTH_REQUIRED') {
-			// $state.go("index");
+			$state.go("index");
 			console.log("HIT AUTH ERROR");
 		}
 	});
@@ -54,11 +54,23 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				templateUrl: 'templates/home.ng.html',
 				controller: 'HomeCtrl',
 				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return $meteor.requireUser();
-					}]
-				}
-			})
+	      currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() == null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
+	    }
+		 })
 			.state('index', {
 				url: '/',
 				templateUrl: 'templates/index.ng.html',
@@ -73,41 +85,81 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				url: '/play/:gameId',
 				templateUrl: 'templates/play.ng.html',
 				controller: 'PlayerTrackerCtrl',
-				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return $meteor.requireUser();
-					}]
-				}
+				currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() == null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
 			})
 			.state('fight', {
 				url: '/play/:gameId/fight',
 				templateUrl: 'templates/play-fight.ng.html',
 				controller: 'PlayerFightCtrl',
-				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return $meteor.requireUser();
-					}]
-				}
+				currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() == null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
 			})
 			.state('gmfight', {
 				url: '/gm/:gameId/fight',
 				templateUrl: 'templates/gm-fight.ng.html',
 				controller: 'GMFightCtrl',
-				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return $meteor.requireUser();
-					}]
-				}
+				currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() == null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
 			})
 			.state('gm', {
 				url: '/gm/:gameId',
 				templateUrl: 'templates/gm.ng.html',
 				controller: 'GMCtrl',
-				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return $meteor.requireUser();
-					}]
-				}
+				currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() == null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
 			})
 			.state('register', {
 				url: '/register',
@@ -118,11 +170,21 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				url: '/login',
 				templateUrl: 'templates/login.ng.html',
 				controller: 'LoginCtrl',
-				resolve: {
-					'currentUser': ['$meteor', function($meteor){
-						return !$meteor.requireUser();
-					}]
-				}
+				currentUser: ($q) => {
+	        var deferred = $q.defer();
+
+	        Meteor.autorun(function () {
+	          if (!Meteor.loggingIn()) {
+	            if (Meteor.user() != null) {
+	              deferred.reject('AUTH_REQUIRED');
+	            } else {
+	              deferred.resolve(Meteor.user());
+	            }
+	          }
+	        });
+
+	        return deferred.promise;
+	      }
 			});
 
 		$urlRouterProvider.otherwise('/');

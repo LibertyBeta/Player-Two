@@ -1,26 +1,43 @@
-angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$stateParams', '$meteor', '$location',
-	function ($scope, $stateParams, $meteor, $location) {
-
+angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', '$stateParams', '$meteor', '$location',
+	function ($scope,$reactive, $stateParams, $meteor, $location) {
+		$reactive(this).attach($scope);
 		$scope.join = false;
 		$scope.game = false;
 		$scope.pageTitle = "Home Page";
-		$meteor.subscribe('games');
-		$scope.userGames = $meteor.collection(function(){
-			return Games.find(
-				{users: $scope.getReactively('currentUser._id')}
-			);
+		this.subscribe("games");
+		$scope.helpers({
+			userGames() {
+				return Games.find({users:Meteor.userId()})
+			}
 		});
+		// this.helpers({
+		// 	userGames: () => {
+		// 		return Games.find({users:Meteor.userId()})
+		// 	}
+		// });
+		// $meteor.subscribe('games');
+		// $scope.userGames = [];
+		// $scope.subscribe('games', () => {
+		// 	return [
+		// 		$scope.userGames
+		// 	]
+		// });
+		// $scope.userGames = $meteor.collection(function(){
+		// 	return Games.find(
+		// 		{users: $scope.getReactively('currentUser._id')}
+		// 	);
+		// });
 		//Now some logic. If the user is logged in, then we don't use session. Otherwise, try to retreive some session
-		$meteor.autorun($scope, function() {
-			$meteor.subscribe("userGames", {
-				users: $scope.getReactively('currentUser._id')})
-			.then(function(){
-				// console.log($scope.currentUser._id);
-				console.log("Games are Ready");
-
-			});
-		});
-		$scope.games = $meteor.collection(Games);
+		// $meteor.autorun($scope, function() {
+		// 	$meteor.subscribe("userGames", {
+		// 		users: $scope.getReactively('currentUser._id')})
+		// 	.then(function(){
+		// 		// console.log($scope.currentUser._id);
+		// 		console.log("Games are Ready");
+		//
+		// 	});
+		// });
+		// $scope.games = $meteor.collection(Games);
 
 		$scope.create = false;
 		$scope.join = false;
@@ -32,11 +49,11 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$stateParams
 		};
 
 		$scope.joinForm = function(){
-			$meteor.call("joinGame",$scope.gameId)
+			Meteor.call("joinGame",$scope.gameId)
 				.then(function(data) {
 					console.log(data);
 					// promise fulfilled
-					$location.path("/play/"+data);
+					// $location.path("/play/"+data);
 				}, function(error) {
 					// promise rejected, could log the error with: console.log('error', error);
 					console.error("ERROR");
