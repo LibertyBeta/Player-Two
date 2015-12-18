@@ -1,12 +1,15 @@
-angular.module('player-tracker').controller('DisplayCtrl', ['$scope', '$stateParams', '$meteor',
-	function ($scope, $stateParams, $meteor) {
-
+angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive', '$stateParams', '$meteor',
+	function ($scope, $reactive, $stateParams, $meteor) {
+		$reactive(this).attach($scope);
 		$scope.gameId = $stateParams.gameId;
-
-		$meteor.subscribe('players', $stateParams.gameId);
-		$scope.players = $meteor.collection(function(){
-			return Players.find({ game : $scope.getReactively('gameId') }, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
+		this.subscribe("players", () => [$scope.gameId]);
+		$scope.helpers({
+			players(){
+				return Players.find({}, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
+			}
 		});
+		// console.log($scope.players);
+		// $scope.gameId = $stateParams.gameId;
 
 		$scope.displayDetails = true;
 

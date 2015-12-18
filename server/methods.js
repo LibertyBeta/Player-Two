@@ -24,7 +24,7 @@ Meteor.methods({
     var aGame = Games.findOne({inviteCode: joinCode});
     console.log("user ID "+this.userId);
     console.log(aGame);
-    if(aGame == null) return false;
+    if(aGame == null) throw new Meteor.Error(404, 'Error 404: Game Not Found', 'There is no game with this invite code. ');
     else {
       Games.update({_id:aGame._id}, { $addToSet:{users: this.userId}});
       return aGame._id;
@@ -79,7 +79,8 @@ Meteor.methods({
   },
 
   startBattle: function(id) {
-    Games.update({_id:id}, { $set:{battle: true}});
+    console.log("GAME " + id + " IS ENTERING COMBAT");
+    return Games.update({_id:id}, { $set:{battle: true}});
   },
 
   endBattle : function(id){
@@ -89,39 +90,80 @@ Meteor.methods({
   },
 
   pushCondition : function(conditionObject, playerId){
-    var currentConditions = Players.findOne({_id:playerId, owner:this.userId}).conditions;
-    console.log(currentConditions);
-    console.log("NEW CONDITION INDEX");
-    console.log(currentConditions.indexOf(conditionObject));
-    var fail = false;
-    for(var i = 0; i < currentConditions.length; i++){
-        if(currentConditions[i].name == conditionObject.name){
-            fail = true;
-        }
-    };
-    if(!fail){
-      currentConditions.push(conditionObject);
-      Players.update({_id:playerId},{$set:{conditions: currentConditions}});
-      console.log(currentConditions);
-      console.log("++++++++++++++++++++++++++++++++++++++++")
+    console.log(conditionObject);
+    console.log("Player Id for Push is " + playerId);
+    console.log("+++++++++++++++++++++++++");
+      Players.update({_id:playerId},{$addToSet: {conditions: conditionObject}});
       return true;
-    } else {
-      return false;
-    }
-
-
   },
 
   popCondition : function(conditionObject, playerId){
-    var currentConditions = Players.findOne({_id:playerId, owner:this.userId}).conditions;
-    for(var i = 0; i < currentConditions.length; i++){
-        if(currentConditions[i].name == conditionObject.name){
-            break;
-        }
-    };
-    console.log(currentConditions.splice(i,1));
-    console.log(currentConditions);
-    Players.update({_id:playerId},{$set:{conditions: currentConditions}});
+
+    Players.update({_id:playerId},{$pull:{conditions: conditionObject}});
   },
+
+  increaseHealth : function(id, amount){
+    var playerDocument = Players.findOne(id);
+    if(!!Object.keys(playerDocument.tempHealth).length){
+      var health = Math.min(playerDocument.tempHealth.maxHealth,playerDocument.tempHealth.currentHealth + amount);
+      Players.update(
+        {_id:id},
+        {$set:
+          {"tempHealth.currentHealth":health}
+        });
+
+    } else {
+      var health = Math.min(playerDocument.maxHealth,playerDocument.currentHealth + amount);
+      Players.update({_id:id}, {$set:{currentHealth:health}});
+    }
+  },
+
+  decreaseHealth : function(id, amount){
+    var playerDocument = Players.findOne(id);
+    console.log(Object.keys(playerDocument.tempHealth).length);
+    if(Object.keys(playerDocument.tempHealth).length !== 0){
+      if(0 >= ( playerDocument.tempHealth.currentHealth - amount)){
+        Players.update({_id:id}, {$set:{tempHealth:{}}});
+      } else {
+        // var health = Math.max(0, (playerDocument.currentHealth - amount));
+        Players.update(
+          {_id:id},
+          {$inc: {"tempHealth.currentHealth":-amount}}
+          );
+
+      }
+    } else {
+      var health = Math.max(0, (playerDocument.currentHealth - amount));
+      console.log("UPDAING HEALTH TO " + health);
+      Players.update(
+        {_id:id},
+        {$set:
+          {currentHealth:health}
+        });
+      // $scope.playerRecord.currentHealth = Math.max(0, ($scope.playerRecord.currentHealth - amount));
+    }
+  },
+
+  setTempHealth : function(id, object){
+    Players.update(
+      {_id:id},
+      {$set:
+        {tempHealth:object}
+      }
+    );
+  },
+
+  setInit : function(id, roll){
+    Players.update(
+      {_id:id},
+      {$set:
+        {battle:roll}
+      }
+    );
+  },
+
+  endRoud : function(id){
+
+  }
 
 });

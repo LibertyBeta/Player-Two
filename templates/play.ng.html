@@ -1,4 +1,7 @@
 <div class="container play">
+  {{playerRecord}}
+  <br/>
+  {{game}}
   <pt-top></pt-top>
   <pt-condtions ng-show="showConditons"></pt-condtions>
   <div class="overlay" ng-show="game.battle && noInit()">
@@ -95,7 +98,7 @@
   </div>
   <hr/>
   <div>
-    <pt-plate ng-repeat="partyMember in players" ng-if="partyMember._id!=playerId">
+    <pt-plate ng-repeat="partyMember in players" ng-if="partyMember._id!=playerRecord._id">
 
     </pt-plate>
   </div>

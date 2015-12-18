@@ -6,11 +6,13 @@ angular.module('player-tracker').controller('LoginCtrl', ['$scope', '$stateParam
 			console.log("running submit....");
 			console.log($scope.loginForm.$valid);
 			if(!$scope.loginForm.$valid) return false;
-			$meteor.loginWithPassword($scope.lForm.user, $scope.lForm.password).then(function(){
-				console.log('Login success');
-			}, function(err){
-				console.log('Login error - ', err);
-				$scope.message = err.reason;
+			Meteor.loginWithPassword($scope.lForm.user, $scope.lForm.password, function(error, result){
+				if(error){
+					console.log('Login success');
+				} else {
+					console.log('Login error - ', err);
+					$scope.message = err.reason;
+				}
 			});
 
 
