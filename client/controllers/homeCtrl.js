@@ -10,34 +10,7 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 				return Games.find({users:Meteor.userId()})
 			}
 		});
-		// this.helpers({
-		// 	userGames: () => {
-		// 		return Games.find({users:Meteor.userId()})
-		// 	}
-		// });
-		// $meteor.subscribe('games');
-		// $scope.userGames = [];
-		// $scope.subscribe('games', () => {
-		// 	return [
-		// 		$scope.userGames
-		// 	]
-		// });
-		// $scope.userGames = $meteor.collection(function(){
-		// 	return Games.find(
-		// 		{users: $scope.getReactively('currentUser._id')}
-		// 	);
-		// });
-		//Now some logic. If the user is logged in, then we don't use session. Otherwise, try to retreive some session
-		// $meteor.autorun($scope, function() {
-		// 	$meteor.subscribe("userGames", {
-		// 		users: $scope.getReactively('currentUser._id')})
-		// 	.then(function(){
-		// 		// console.log($scope.currentUser._id);
-		// 		console.log("Games are Ready");
-		//
-		// 	});
-		// });
-		// $scope.games = $meteor.collection(Games);
+
 
 		$scope.create = false;
 		$scope.join = false;

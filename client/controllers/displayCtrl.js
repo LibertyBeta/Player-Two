@@ -2,13 +2,14 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 	function ($scope, $reactive, $stateParams, $meteor) {
 		$reactive(this).attach($scope);
 		$scope.gameId = $stateParams.gameId;
-		this.subscribe("players");
+		this.subscribe("players", () => [$scope.gameId]);
 		$scope.helpers({
-			players() {
-				return Players.find({ game : $stateParams.gameId }, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
+			players(){
+				return Players.find({}, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
 			}
 		});
-
+		// console.log($scope.players);
+		// $scope.gameId = $stateParams.gameId;
 
 		$scope.displayDetails = true;
 
