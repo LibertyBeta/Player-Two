@@ -64,6 +64,7 @@ Meteor.publish('games', function () {
 });
 
 Meteor.publish('game', function (id) {
+	console.log("Publshing Game with the Id of " + id);
 	return Games.find({_id : id});
 });
 
@@ -73,7 +74,7 @@ Meteor.publish('players', function (passData) {
 	return Players.find({ game : passData });
 });
 
-Meteor.publish('aplayer', function (limiters) {
+Meteor.publish('playerRecord', function (limiters) {
 	// console.log("Subbings for players with limiters of", limiters);
 	// console.log(Players.findOne({ owner : this.userId }));
 	return Players.find(limiters);

@@ -1,16 +1,42 @@
-angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval",
-	function ($scope, $filter, $rootScope, $stateParams, $meteor, $location, $interval) {
+angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$reactive', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval",
+	function ($scope, $reactive, $filter, $rootScope, $stateParams, $meteor, $location, $interval) {
+		$reactive(this).attach($scope);
 		$scope.url = $location.absUrl();
 		$scope.gameId = $stateParams.gameId;
-		$scope.games = $scope.$meteorCollection(Games);
-		$scope.game = {};
+		$scope.subscribe("players", () => [$scope.gameId]);
+		$scope.subscribe("game", () => [$scope.gameId]);
+		$scope.subscribe("playerRecord", () => [Meteor.userId()]);
+		// $scope.games = $scope.$meteorCollection(Games);
+		// $scope.game = {};
 		$scope.showConditons = false;
-		$scope.$meteorSubscribe('game',$scope.gameId).then(function(){
-      // Bind all the todos to $scope.todos
+		$scope.helpers({
+			game(){
+				return Games.findOne({_id:$scope.gameId});
+			},
+			players(){
+				return Players.find(
+					{game : $scope.gameId },
+					{sort:{ 'battle.round' : 1, 'battle.init': -1 }});
+			},
+			playerRecord(){
+					return Players.findOne({game: $scope.gameId, owner: Meteor.userId()});
+			}
+		});
+		console.log($scope.game);
+		// $scope.autorun(function(){
+		// 	$scope.pageTitle = $scope.game.name;
+		// })
+		$scope.autorun(() => {
+			// console.log(`current search string is: `, $scope.game.name);
+  	});
 
-			$scope.game = $meteor.object(Games,$scope.gameId);
-			$scope.pageTitle = $scope.game.name;
-    });
+
+		// $scope.$meteorSubscribe('game',$scope.gameId).then(function(){
+    //   // Bind all the todos to $scope.todos
+		//
+		// 	$scope.game = $meteor.object(Games,$scope.gameId);
+		// 	$scope.pageTitle = $scope.game.name;
+    // });
 
 		$scope.conditions = [
 			{
@@ -41,37 +67,37 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 		$scope.playerId = null;
 
-		$scope.players = $scope.$meteorCollection(Games);
+		// $scope.players = $scope.$meteorCollection(Games);
 
 		//get player record
-		$scope.players = $scope.$meteorCollection(function(){
-			return Players.find(
-				{game : $scope.getReactively('gameId') },
-				{sort:{ 'battle.round' : 1, 'battle.init': -1 }});
-		});
-		$meteor.subscribe('players', $stateParams.gameId);
+		// $scope.players = $scope.$meteorCollection(function(){
+		// 	return Players.find(
+		// 		{game : $scope.getReactively('gameId') },
+		// 		{sort:{ 'battle.round' : 1, 'battle.init': -1 }});
+		// });
+		// $meteor.subscribe('players', $stateParams.gameId);
 
 
 		//get player record
-		$scope.aPlayer = $meteor.collection(function(){
-			return Players.find(
-				{game: $scope.gameId, owner: $scope.getReactively('currentUser._id')}
-			);
-		});
+		// $scope.aPlayer = $meteor.collection(function(){
+		// 	return Players.find(
+		// 		{game: $scope.gameId, owner: $scope.getReactively('currentUser._id')}
+		// 	);
+		// });
 		//Now some logic. If the user is logged in, then we don't use session. Otherwise, try to retreive some session
-		$meteor.autorun($scope, function() {
-			$meteor.subscribe("aplayer", {
-				game: $scope.gameId, owner: $scope.getReactively('currentUser._id'), _id: $scope.getReactively("playerId")})
-			.then(function(){
-				// console.log($scope.currentUser._id);
-				console.log("Player 1 is ready ", $scope.aPlayer[0]);
-				$scope.playerRecord = $scope.aPlayer[0];
-				if($scope.playerRecord){
-						$scope.playerId = $scope.playerRecord._id;
-				}
-
-			});
-		});
+		// $meteor.autorun($scope, function() {
+		// 	$meteor.subscribe("aplayer", {
+		// 		game: $scope.gameId, owner: $scope.getReactively('currentUser._id'), _id: $scope.getReactively("playerId")})
+		// 	.then(function(){
+		// 		// console.log($scope.currentUser._id);
+		// 		console.log("Player 1 is ready ", $scope.aPlayer[0]);
+		// 		$scope.playerRecord = $scope.aPlayer[0];
+		// 		if($scope.playerRecord){
+		// 				$scope.playerId = $scope.playerRecord._id;
+		// 		}
+		//
+		// 	});
+		// });
 
 		$scope.$watch("game.battle", function(newValue, oldValue){
 			console.log("HIT DISPLAY ENEINGE");
@@ -80,6 +106,13 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 					console.log("SHOW THE DISPLAY MARTY!");
 					$scope.overlay = true;
 				}
+			}
+		});
+
+		$scope.$watch("game.name", function(newValue, oldValue){
+
+			if(newValue){
+				$scope.pageTitle = $scope.game.name;
 			}
 		});
 
@@ -106,12 +139,12 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 				});
 		};
 
-		$scope.returnToGame = function(){
-			$scope.playerRecord = $meteor.object(Players,{recovery : $scope.recovery.recovery, game: $scope.gameId, name: $scope.recovery.playerName});
-			console.log($scope.playerRecord);
-			sessionStorage.setItem('playerId',$scope.playerRecord._id);
-			$scope.playerId = sessionStorage.getItem('playerId');
-		};
+		// $scope.returnToGame = function(){
+		// 	$scope.playerRecord = $meteor.object(Players,{recovery : $scope.recovery.recovery, game: $scope.gameId, name: $scope.recovery.playerName});
+		// 	console.log($scope.playerRecord);
+		// 	sessionStorage.setItem('playerId',$scope.playerRecord._id);
+		// 	$scope.playerId = sessionStorage.getItem('playerId');
+		// };
 
 		$scope.health = function(maxHealth, currentHealth){
 			return (currentHealth / maxHealth ) * 100 + "%";
@@ -124,11 +157,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 		$scope.increaseHealth = function(amount){
 			$scope.healthDialog = false;
-			if(!angular.equals($scope.playerRecord.tempHealth,{})){
-				$scope.playerRecord.tempHealth.currentHealth = Math.min($scope.playerRecord.tempHealth.maxHealth,$scope.playerRecord.tempHealth.currentHealth + amount);
-			} else {
-				$scope.playerRecord.currentHealth = Math.min($scope.playerRecord.maxHealth, ($scope.playerRecord.currentHealth + amount));
-			}
+			Meteor.call("increaseHealth", $scope.playerRecord._id, amount);
 		};
 
 
@@ -136,16 +165,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 		$scope.decreaseHealth = function(amount){
 			$scope.healthDialog = false;
-			if(angular.equals($scope.playerRecord.tempHealth,{}) === false){
-				if(0 >= ( $scope.playerRecord.tempHealth.currentHealth - amount)){
-					$scope.playerRecord.tempHealth = {};
-				} else {
-					$scope.playerRecord.tempHealth.currentHealth = $scope.playerRecord.tempHealth.currentHealth - amount;
-				}
-			} else {
-				$scope.playerRecord.currentHealth = Math.max(0, ($scope.playerRecord.currentHealth - amount));
-			}
-
+			Meteor.call("decreaseHealth", $scope.playerRecord._id, amount);
 		};
 
 		$scope.healthDialogShow = function(type){
@@ -181,35 +201,37 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 		$scope.setTemp = function(){
 			$scope.temp = false;
-			$scope.playerRecord.tempHealth = {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput};
+			Meteor.call("setTempHealth", $scope.playerRecord._id, {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput});
+			// $scope.playerRecord.tempHealth = {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput};
 		};
 
 		$scope.leave = function() {
 			console.log($scope.playerRecord);
 			console.log("USER IS");
 			console.log($meteor.userId);
-			$meteor.call("removePlayer",$scope.playerRecord._id)
-				.then(function(data) {
+			Meteor.call("removePlayer",$scope.playerRecord._id, function(error, result){
+				if(error){
+					console.error(error);
+				} else {
 					console.log(data);
 					$scope.playerId = null;
 					sessionStorage.clear();
-					// console.log($scope.playerRecord);
-					// console.log($scope.playerRecord.name);
-				}, function(error) {
-					// promise rejected, could log the error with: console.log('error', error);
-					console.error(error);
-				});
+				}
+			});
 		};
 
 		$scope.initInit = function(){
-			$meteor.call("startBattle", $scope.game._id).then(function(){});
+			Meteor.call("startBattle", $scope.game._id, function(error, result){
+				console.log(error);
+				console.log(result);
+			});
 		};
 
 		$scope.setInit = function(){
-			$scope.playerRecord.battle = {
+			Meteor.call("setInit", $scope.playerRecord._id, {
 				init: $scope.battle.roll,
 				round: 0
-			};
+			});
 			$scope.overlay = false;
 		};
 
@@ -224,11 +246,12 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 		$scope.endRound = function(){
 			$scope.playerRecord.battle.round++;
+
 		};
 
 		$scope.endBattle = function(){
 			console.log("Ending the fight.");
-			$meteor.call('endBattle', $scope.gameId);
+			Meteor.call('endBattle', $scope.gameId, function(error, result){});
 		};
 
 		$scope.noInit = function(){
@@ -253,14 +276,13 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$fi
 
 			// if($scope.playerRecord.conditions.indexOf($scope.conditions[conditionIndex])==-1)$scope.playerRecord.conditions.push(angular.copy($scope.conditions[conditionIndex]));
 
-			$meteor.call("pushCondition", angular.copy($scope.conditions[conditionIndex]), $scope.playerId);
+			Meteor.call("pushCondition", angular.copy($scope.conditions[conditionIndex]), $scope.playerRecord._id);
 		};
 
 		$scope.popCondition = function(object){
 			// console.log(index);
-			$meteor.call("popCondition", object, $scope.playerId);
-			// if($scope.conditions.lenght === 0 ) $scope.conditions = [];
-			// console.log($scope.playerRecord.conditions);
+			Meteor.call("popCondition", angular.copy(object), $scope.playerRecord._id);
+
 
 		};
 
