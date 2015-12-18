@@ -24,7 +24,7 @@ Meteor.methods({
     var aGame = Games.findOne({inviteCode: joinCode});
     console.log("user ID "+this.userId);
     console.log(aGame);
-    if(aGame == null) return false;
+    if(aGame == null) throw new Meteor.Error(404, 'Error 404: Game Not Found', 'There is no game with this invite code. ');
     else {
       Games.update({_id:aGame._id}, { $addToSet:{users: this.userId}});
       return aGame._id;

@@ -49,16 +49,14 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 		};
 
 		$scope.joinForm = function(){
-			Meteor.call("joinGame",$scope.gameId)
-				.then(function(data) {
-					console.log(data);
-					// promise fulfilled
+			Meteor.call("joinGame",$scope.gameId, function(error, result){
+				if(error){
+					console.error(error);
+				} else {
+					console.log(result);
 					// $location.path("/play/"+data);
-				}, function(error) {
-					// promise rejected, could log the error with: console.log('error', error);
-					console.error("ERROR");
-				});
-			// $location.path("/play/"+$scope.gameId);
+				}
+			})
 		};
 
 		$scope.createGame = function() {
@@ -72,19 +70,19 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 				gameName: $scope.gameName
 			});
 			console.log(newDocument);
-			$meteor.call("addGame",newDocument)
-				.then(function(data) {
-					console.log(data);
-					// promise fulfilled
-					$location.path("/play/"+data);
-				}, function(error) {
-					// promise rejected, could log the error with: console.log('error', error);
+			Meteor.call("addGame",newDocument, function(error, result){
+				if(error){
 					console.error("ERROR");
-				});
+				} else {
+					console.log(result);
+					// promise fulfilled
+					$location.path("/play/"+result);
+				}
+			});
 		};
 
 		$scope.logout = function(){
-			$meteor.logout();
+			Metor.logout();
 		};
 
 		// $meteor.collection("games").find({_id:$scope.partyId});
