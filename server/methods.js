@@ -8,7 +8,8 @@ Meteor.methods({
       users: [this.userId],
       battle: false
     });
-
+    var aGame = Games.findOne({_id: promise});
+    Games.update({_id:promise}, { $set:{inviteCode: aGame._id.substring(0,4) + aGame.name.substring(0,4).replace(" ", "_")}});
     return promise;
   },
 
@@ -17,16 +18,18 @@ Meteor.methods({
     Games.update({_id:gameId}, { $set:{inviteCode: aGame._id.substring(0,4) + aGame.name.substring(0,4).replace(" ", "_")}});
     var promise = Games.findOne({_id: gameId});
     return promise;
-  }
+  },
 
   joinGame : function(joinCode){
     var aGame = Games.findOne({inviteCode: joinCode});
+    console.log("user ID "+this.userId);
+    console.log(aGame);
     if(aGame == null) return false;
     else {
-      var users = aGame.users;
-      Games.update({_id:aGame._id}, { $set:{users: users.push(this.userId)}});
+      Games.update({_id:aGame._id}, { $addToSet:{users: this.userId}});
+      return aGame._id;
     }
-  }
+  },
 
   addPlayer: function (element) {
     console.log(element);
@@ -43,8 +46,8 @@ Meteor.methods({
       createdAt: new Date()
     });
     if(this.userId){
-      var users = Games.findOne({_id: element.game}).users;
-      Games.update({_id:element.game}, { $set:{users: users.push(this.userId)}});
+
+      Games.update({_id:element.game}, { $addToSet:{users: this.userId}});
     }
 
 

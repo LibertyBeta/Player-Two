@@ -32,7 +32,16 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$stateParams
 		};
 
 		$scope.joinForm = function(){
-			$location.path("/play/"+$scope.gameId);
+			$meteor.call("joinGame",$scope.gameId)
+				.then(function(data) {
+					console.log(data);
+					// promise fulfilled
+					$location.path("/play/"+data);
+				}, function(error) {
+					// promise rejected, could log the error with: console.log('error', error);
+					console.error("ERROR");
+				});
+			// $location.path("/play/"+$scope.gameId);
 		};
 
 		$scope.createGame = function() {
