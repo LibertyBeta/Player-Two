@@ -19,6 +19,14 @@
     </div>
   </div>
 
+  <div class="overlay" ng-show="dmWarn">
+    <div class="body">
+      <h2>WARNING, THIS CHANGE CAN'T BE UNDONE. </h2>
+      <button class="negative" hm-tap="dmWarn = false">Cancel</button>
+      <button class="positive" hm-tap="becomeDM()">BECOME THE DM!</button>
+    </div>
+  </div>
+
   <div id="add-player" ng-hide="playerRecord">
     <header>Add Player</header>
     <div class="form">
@@ -38,6 +46,9 @@
         <input type="text" ng-model="recovery.recovery" required placeholder="Recovery Passcode">
         <button> Recover Player </button>
       </form>
+    </div>
+    <div class="form" ng-hide="$game.dm">
+      <button type="feature" hm-tap="dmWarn = true"> Become Game DM </button>
     </div>
   </div>
   <div class="player" ng-show="playerRecord">

@@ -163,7 +163,27 @@ Meteor.methods({
   },
 
   endRoud : function(id){
+    Players.update(
+      {_id:id},
+      {$inc:
+        {"battle.round":1}
+      }
+    );
+  },
 
+  changeGameDM : function(userId, gameId){
+    //first, check to see if there is already a dm. No overwriting the dm. EVER.
+    var dmCheck  = Games.findOne(gameId);
+    if(dmCheck.dm){
+      throw new Meteor.Error(503,"DM already exists");
+    } else {
+      return Games.update({_id:gameId}, {$set:{dm:userId}});
+    }
+  },
+
+  dmCheck : function(gameId){
+    console.log("Checking for game " + gameId);
+    return false;
   }
 
 });

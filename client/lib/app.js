@@ -33,10 +33,13 @@ angular.module('player-tracker').run(['$rootScope', '$state', function($rootScop
   });
 
 	$rootScope.$watch('currentUser', function(){
-		if(!$rootScope.currentUser){
-			$state.go("index");
+		if (!Meteor.loggingIn()) {
+			if (Meteor.user() === null) {
+				$state.go("index");
+			}
 		}
-	})
+
+	});
 
 
 }]);
@@ -59,7 +62,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -90,7 +93,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -110,7 +113,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -130,7 +133,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -147,12 +150,17 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				controller: 'GMCtrl',
 				currentUser: ($q) => {
 	        var deferred = $q.defer();
-
+console.log("checking for the DM. ");
 	        Meteor.autorun(function () {
+						console.log("checking for the DM. ");
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+							console.log("checking the dm id");
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
+							} else if(Meteor.call("dmCheck", "50") === false){
+								deferred.reject('AUTH_REQUIRED');
 	            } else {
+								//check to make sure the game is DM'ed by the current user
 	              deferred.resolve(Meteor.user());
 	            }
 	          }

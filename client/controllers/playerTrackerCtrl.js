@@ -193,7 +193,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 				}
 			}
 			$scope.healthDialog = true;
-		}
+		};
 
 		$scope.temporaryForm = function() {
 			$scope.temp = true;
@@ -203,6 +203,18 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			$scope.temp = false;
 			Meteor.call("setTempHealth", $scope.playerRecord._id, {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput});
 			// $scope.playerRecord.tempHealth = {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput};
+		};
+
+		$scope.becomeDM = function(){
+			console.log("Trying to become DM.");
+			Meteor.call("changeGameDM", Meteor.userId(), $scope.game._id, function(error, result){
+				if(error){
+					//Handle the error
+					console.error(error);
+				} else {
+					$location.path("/dm/"+$scope.game._id);
+				}
+			});
 		};
 
 		$scope.leave = function() {
@@ -237,15 +249,17 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 
 		$scope.battlePosition = function(){
 			//filter the array
-		  var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
+			if($scope.game.battle){
+		  	var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
 
-		  //get the index
-		  var index = $scope.players.indexOf(foundItem);
-			return index + 1;
+		  	//get the index
+		  	var index = $scope.players.indexOf(foundItem);
+				return index + 1;
+			}
 		};
 
 		$scope.endRound = function(){
-			$scope.playerRecord.battle.round++;
+			Meteor.call("setInit", $scope.playerRecord._id, function(error, result){});
 
 		};
 
