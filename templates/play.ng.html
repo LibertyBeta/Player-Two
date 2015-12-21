@@ -1,7 +1,4 @@
 <div class="container play">
-  {{playerRecord}}
-  <br/>
-  {{game}}
   <pt-top></pt-top>
   <pt-condtions ng-show="showConditons"></pt-condtions>
   <div class="overlay" ng-show="game.battle && noInit()">
@@ -87,7 +84,7 @@
     <div id="battle" ng-show="game.battle">
       <div class="messages">
         <ul>
-          <li class="position-block" ng-repeat="partyMember in players"><div class="marker" ng-show="partyMember._id == playerId"></div></li>
+          <li class="position-block" ng-repeat="partyMember in players"><div class="marker" ng-show="partyMember._id == playerRecord._id"></div></li>
         </ul>
       </div>
       <div class="controls" ng-show="battlePosition() == 1">

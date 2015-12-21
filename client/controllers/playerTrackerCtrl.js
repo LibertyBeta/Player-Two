@@ -237,7 +237,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 
 		$scope.battlePosition = function(){
 			//filter the array
-		  var foundItem = $filter('filter')($scope.players, { _id: $scope.playerId  }, true)[0];
+		  var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
 
 		  //get the index
 		  var index = $scope.players.indexOf(foundItem);
