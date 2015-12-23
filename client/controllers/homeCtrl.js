@@ -8,6 +8,9 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 		$scope.helpers({
 			userGames() {
 				return Games.find({users:Meteor.userId()})
+			},
+			userId() {
+				return Meteor.userId();
 			}
 		});
 
@@ -27,7 +30,8 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 					console.error(error);
 				} else {
 					console.log(result);
-					// $location.path("/play/"+data);
+					$location.path("/play/"+data).replace();
+					// $scope.$apply();
 				}
 			})
 		};
@@ -49,7 +53,8 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 				} else {
 					console.log(result);
 					// promise fulfilled
-					$location.path("/play/"+result);
+					$location.path("/play/"+result).replace();
+					$scope.$apply();
 				}
 			});
 		};

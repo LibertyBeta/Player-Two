@@ -18,9 +18,13 @@
 		</div>
 		<div class='game-list'>
 
-      <ul>
-        <li ng-repeat="userGame in userGames">
-          {{userGame.name}} - <a href="/play/{{userGame._id}}">Play</a> | <a href="/display/{{userGame._id}}">Display</a> | {{userGame.inviteCode}} } |<a href="/gm/{{userGame._id}}">gm</a>
+      <ul class="gameList">
+        <li ng-repeat="userGame in userGames" >
+					<span class="name">{{userGame.name}}</span>
+					<span class="gm" ng-show="userGame.dm == userId"><a href="/gm/{{userGame._id}}">gm</a></span>
+					<span class="play" ng-show="userGame.dm != userId"><a href="/play/{{userGame._id}}">Play</a></span>
+          <span class="play"><a href="/display/{{userGame._id}}">Display</a></span>
+					<span>{{userGame.inviteCode}}</span>
         </li>
 				<li ng-hide="userGames.length">
 					No Games. Why don't you start one.

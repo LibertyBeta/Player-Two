@@ -212,7 +212,9 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 					//Handle the error
 					console.error(error);
 				} else {
-					$location.path("/dm/"+$scope.game._id);
+					console.log("trying to path");
+					$location.path("/gm/"+$scope.game._id);
+					$scope.$apply();
 				}
 			});
 		};
