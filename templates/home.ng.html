@@ -20,7 +20,7 @@
 
       <ul>
         <li ng-repeat="userGame in userGames">
-          {{userGame.name}} - <a href="/play/{{userGame._id}}">Play</a> | <a href="/display/{{userGame._id}}">Display</a> | {{userGame.inviteCode}}
+          {{userGame.name}} - <a href="/play/{{userGame._id}}">Play</a> | <a href="/display/{{userGame._id}}">Display</a> | {{userGame.inviteCode}} } |<a href="/gm/{{userGame._id}}">gm</a>
         </li>
 				<li ng-hide="userGames.length">
 					No Games. Why don't you start one.

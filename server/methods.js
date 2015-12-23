@@ -183,6 +183,10 @@ Meteor.methods({
 
   dmCheck : function(gameId){
     console.log("Checking for game " + gameId);
+    var dmCheck  = Games.findOne({_id:gameId, dm:Meteor.userId()});
+    console.log(dmCheck);
+    // return false;
+    if(dmCheck) return true;
     return false;
   }
 

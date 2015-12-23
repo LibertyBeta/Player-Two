@@ -6,6 +6,11 @@ angular.module('player-tracker').run(['$rootScope', '$state', function($rootScop
 			$state.go("index");
 			console.log("HIT AUTH ERROR");
 		}
+
+		if (rejection === 'DM_AUTH_REQUIRED') {
+			$state.go("home");
+			console.log("HIT AUTH ERROR");
+		}
 	});
 
 	Accounts.onLogin(function () {
@@ -148,26 +153,39 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				url: '/gm/:gameId',
 				templateUrl: 'templates/gm.ng.html',
 				controller: 'GMCtrl',
-				currentUser: ($q) => {
-	        var deferred = $q.defer();
-console.log("checking for the DM. ");
-	        Meteor.autorun(function () {
-						console.log("checking for the DM. ");
-	          if (!Meteor.loggingIn()) {
-							console.log("checking the dm id");
-	            if (Meteor.user() === null) {
-	              deferred.reject('AUTH_REQUIRED');
-							} else if(Meteor.call("dmCheck", "50") === false){
-								deferred.reject('AUTH_REQUIRED');
-	            } else {
-								//check to make sure the game is DM'ed by the current user
-	              deferred.resolve(Meteor.user());
-	            }
-	          }
-	        });
+				resolve:{
+					currentUser: ($q, $stateParams) => {
+		        var deferred = $q.defer();
+		        Meteor.autorun(function () {
+		          if (!Meteor.loggingIn()) {
+								// console.log("checking the dm id" + $stateParams.gameId);
+		            if (Meteor.user() === null) {
+		              deferred.reject('AUTH_REQUIRED');
+								} else {
+									//check to make sure the game is DM'ed by the current user
+		              deferred.resolve(Meteor.user());
+		            }
+		          }
+		        });
 
-	        return deferred.promise;
-	      }
+		        return deferred.promise;
+		      },
+					dm: ($q, $stateParams) =>{
+						console.log("checking for the DM. ");
+						var deferred = $q.defer();
+						Meteor.call("dmCheck", $stateParams.gameId, function(error, result){
+							if(error){
+								console.log(error);
+								deferred.reject('AUTH_REQUIRED');
+							} else {
+								if(result === true) deferred.resolve(Meteor.user());
+								else deferred.reject('DM_AUTH_REQUIRED');
+							}
+						});
+						return deferred.promise;
+					}
+
+				}
 			})
 			.state('register', {
 				url: '/register',
