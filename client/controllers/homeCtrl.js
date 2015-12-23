@@ -55,7 +55,7 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 		};
 
 		$scope.logout = function(){
-			Metor.logout();
+			Meteor.logout();
 		};
 
 		// $meteor.collection("games").find({_id:$scope.partyId});
