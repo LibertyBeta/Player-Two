@@ -1,1 +1,17 @@
-GM
+<div class="container play">
+  <pt-top></pt-top>
+  <pt-condtions ng-show="showConditons"></pt-condtions>
+  {{gameId}}
+  <hr/>
+  {{players}}
+
+
+
+  <hr/>
+  <div>
+    <pt-plate ng-repeat="partyMember in players">
+
+    </pt-plate>
+  </div>
+  <!-- {{gameId}} -->
+</div>

@@ -25,3 +25,6 @@ $mobile: new-breakpoint(max-width $small 4);
 $smallscreen: new-breakpoint(max-width $medium);
 
 $visual-grid: true;
+
+//fonts
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);

@@ -2,32 +2,51 @@
   @include span-columns(12);
   @include omega();
   .game-list{
-    @include span-columns(4);
+    @include span-columns(5);
     ul{
       list-style: none;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.75em;
+      padding-left:0.5px;
       li{
+        width: 100%;
         @include borderThis($nutural, 4px);
         padding: 5px;
         margin-top: 5px;
         .name{
-          @include borderThis($positive, 2px);
+
+          @include span-columns(4);
+          @include omega();
+          vertical-align: center;
         }
         .gm{
           @include borderThis($negative, 2px);
+          @include span-columns(2);
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
         }
-        .play{
+        .play-link{
+          @include span-columns(2);
           @include borderThis($positive, 2px);
           background-color: $positive;
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
         }
         .display{
+          @include span-columns(3);
           @include borderThis($nutural, 2px);
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
         }
       }
     }
   }
   .controls{
     @include span-columns(6);
-    @include shift(2);
+    @include shift(1);
     #add{
       padding: 5px;
       @include borderThis(#ff98cc, 5px);
