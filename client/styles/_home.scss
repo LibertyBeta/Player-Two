@@ -3,6 +3,27 @@
   @include omega();
   .game-list{
     @include span-columns(4);
+    ul{
+      list-style: none;
+      li{
+        @include borderThis($nutural, 4px);
+        padding: 5px;
+        margin-top: 5px;
+        .name{
+          @include borderThis($positive, 2px);
+        }
+        .gm{
+          @include borderThis($negative, 2px);
+        }
+        .play{
+          @include borderThis($positive, 2px);
+          background-color: $positive;
+        }
+        .display{
+          @include borderThis($nutural, 2px);
+        }
+      }
+    }
   }
   .controls{
     @include span-columns(6);

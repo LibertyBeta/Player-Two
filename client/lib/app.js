@@ -14,6 +14,7 @@ angular.module('player-tracker').run(['$rootScope', '$state', function($rootScop
 	});
 
 	Accounts.onLogin(function () {
+		console.log("Logging in");
     if($state.is('index')){
 			$state.go('home');
 		}
