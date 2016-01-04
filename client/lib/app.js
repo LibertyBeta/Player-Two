@@ -220,7 +220,54 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 angular.module('player-tracker').directive('ptPlate',function(){
 	return{
 		restrict: 'E',
-		templateUrl: 'templates/player-plate.ng.html'
+		link: function($scope, elem, attr){
+			if(attr.type == "gm"){
+				$scope.increaseHealth = function(id, amount){
+					Meteor.call("increaseHealth", id, amount);
+				};
+
+				$scope.decreaseHealth = function(id, amount){
+					console.log(id + " . " + amount);
+					Meteor.call("decreaseHealth", id, amount);
+				};
+
+				$scope.kill = function(amount){
+
+				};
+
+				$scope.remove = function(id){
+					Meteor.call("removeNPC", id, function(err, result){
+						if(err){
+
+						} else {
+
+						}
+					})
+				};
+			}
+			$scope.health = function(maxHealth, currentHealth){
+				return (currentHealth / maxHealth ) * 100 + "%";
+			};
+
+			$scope.barColor = function(current,max){
+				if(current < (max/3)){
+					return "danger";
+				} else if (current < (max/2)) {
+					return "warning";
+				} else{
+					return "good";
+				}
+			};
+		},
+		templateUrl:  function(elem, attr){
+			if(attr.type == "gm"){
+				return 'templates/gm-plate.ng.html';
+			} if(attr.type=="player"){
+				return 'templates/plate.ng.html';
+			}else {
+				return 'templates/player-plate.ng.html';
+			}
+		}
 	};
 });
 

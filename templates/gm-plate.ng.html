@@ -1,0 +1,22 @@
+<div class="player-plate">
+	{{partyMember.harmInput}}
+	{{partyMember.healInput}}
+	<header> {{ partyMember.name }}</header>
+	<span class="left" ng-show="displayDetails || gm">{{partyMember.tempHealth.maxHealth + " " + partyMember.currentHealth}}</span>
+	<div class="health-bar">
+		<div class="bar" ng-class="barColor(partyMember.currentHealth,partyMember.maxHealth)">
+			<div class="hit" style="width:{{health(partyMember.maxHealth, (partyMember.maxHealth - partyMember.currentHealth))}}"></div>
+			<div class="hit temp" style="width:{{health(partyMember.tempHealth.maxHealth, partyMember.tempHealth.currentHealth)}}"></div>
+		</div>
+	</div>
+	<div class="conditions">
+		<div ng-repeat="condition in partyMember.conditions | filter:{name: '!!'}">{{condition.name}}</div>
+	</div>
+	<div class="controls">
+		<button hm-tap="increaseHealth(partyMember._id, partyMember.healInput)">Heal</button><input type="number" ng-model="partyMember.healInput">
+		<button hm-tap="decreaseHealth(partyMember._id, partyMember.harmInput)">Hurt</button><input type="number" ng-model="partyMember.harmInput">
+		<button hm-tap="kill">Kill</button>
+		<button hm-tap="addCondition">Add Condition</button>
+		<button hm-tap="remove(partyMember._id)" ng-show="partyMember.npc == true">Remove</button>
+	</div>
+</div>

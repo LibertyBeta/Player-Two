@@ -35,4 +35,23 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 			}
 		});
 
+		
+
+		$scope.addNPC = function(){
+			$scope.npc.battle = {init:$scope.npc.init, round:$scope.game.battle.round};
+			Meteor.call("addNPC", $scope.npc, $scope.game._id, function(error, result){
+				if(error){
+					//Handle the error
+					console.error(error);
+				} else {
+					console.log("trying to path");
+				}
+			});
+		};
+
+
+
+
+
+
 }]);

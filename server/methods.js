@@ -6,7 +6,8 @@ Meteor.methods({
       inviteCode : '',
       createdAt: new Date(),
       users: [this.userId],
-      battle: false
+      battle: false,
+      displayNPC: true,
     });
     var aGame = Games.findOne({_id: promise});
     Games.update({_id:promise}, { $set:{inviteCode: aGame._id.substring(0,4) + aGame.name.substring(0,4).replace(" ", "_")}});
@@ -49,9 +50,23 @@ Meteor.methods({
 
       Games.update({_id:element.game}, { $addToSet:{users: this.userId}});
     }
+    return promise;
+  },
 
-
-
+  addNPC: function (element, gameId) {
+    console.log(element);
+    var promise = Players.insert({
+      name: element.name,
+      currentHealth: element.health,
+      maxHealth: element.health,
+      game: gameId,
+      tempHealth: {},
+      battle: element.battle,
+      conditions: [],
+      owner: this.userId,
+      npc: true,
+      createdAt: new Date()
+    });
     return promise;
   },
 
@@ -76,6 +91,10 @@ Meteor.methods({
     }
 
     return promise;
+  },
+
+  removeNPC: function(id){
+    return Players.remove({_id:id, owner:this.userId});
   },
 
   startBattle: function(id) {
@@ -120,7 +139,7 @@ Meteor.methods({
 
   decreaseHealth : function(id, amount){
     var playerDocument = Players.findOne(id);
-    console.log(Object.keys(playerDocument.tempHealth).length);
+    console.log(playerDocument);
     if(Object.keys(playerDocument.tempHealth).length !== 0){
       if(0 >= ( playerDocument.tempHealth.currentHealth - amount)){
         Players.update({_id:id}, {$set:{tempHealth:{}}});

@@ -3,13 +3,29 @@
   <pt-condtions ng-show="showConditons"></pt-condtions>
   {{gameId}}
   <hr/>
-  {{players}}
-
-
+  <!-- {{players}} -->
+  <div id="game-controls">
+    {{game}}
+    Display NPCs : {{game.displayNPC}}
+    Start Combat : {{game.battle}}
+    Game controls go here.
+  </div>
+  <div id="npc-controls">
+    {{npc}}
+    <div class="npc">
+      <input ng-model="npc.name">
+      <input ng-model="npc.health">
+      <input ng-model="npc.init">
+      <button hm-tap="addNPC()"> Add NPC</button>
+    </div>
+  </div>
+  <div id="game-info">
+    game info display
+  </div>
 
   <hr/>
   <div>
-    <pt-plate ng-repeat="partyMember in players">
+    <pt-plate type="gm" ng-repeat="partyMember in players">
 
     </pt-plate>
   </div>
