@@ -35,7 +35,7 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 			}
 		});
 
-		
+
 
 		$scope.addNPC = function(){
 			$scope.npc.battle = {init:$scope.npc.init, round:$scope.game.battle.round};
@@ -49,8 +49,19 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 			});
 		};
 
+		$scope.callForInit = function(){
+			Meteor.call("startBattle", $scope.game._id, function(error, result){
+				console.log(error);
+				console.log(result);
+			});
+		};
 
-
+		$scope.toggleDisplayNPC = function(){
+			Meteor.call("toggleNPC", $scope.game._id, function(error, result){
+				console.log(error);
+				console.log(result);
+			});
+		}
 
 
 

@@ -1,4 +1,4 @@
-<div class="player-plate">
+<div class="player-plate" ng-show="showNPC(partyMember.npc)">
 	<header> {{ partyMember.name }}</header>
 	<span class="left" ng-show="displayDetails || gm">{{partyMember.tempHealth.maxHealth + " " + partyMember.currentHealth}}</span>
 	<div class="health-bar">

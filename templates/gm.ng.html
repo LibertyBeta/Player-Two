@@ -4,23 +4,30 @@
   {{gameId}}
   <hr/>
   <!-- {{players}} -->
-  <div id="game-controls">
-    {{game}}
-    Display NPCs : {{game.displayNPC}}
-    Start Combat : {{game.battle}}
-    Game controls go here.
-  </div>
-  <div id="npc-controls">
-    {{npc}}
-    <div class="npc">
-      <input ng-model="npc.name">
-      <input ng-model="npc.health">
-      <input ng-model="npc.init">
-      <button hm-tap="addNPC()"> Add NPC</button>
+  <div class="top-row">
+    <div id="game-controls">
+      <!-- {{game}} -->
+      <button hm-tap="toggleDisplayNPC()" ng-class="{active: game.displayNPC}"> Display NPCs in combat</button>
+      <button hm-tap="callForInit()"> Start Combat</button>
+      <button hm-tap="endCombat()"> End Combat</button>
+      <button hm-tap="endTurn()"> End Turn</button>
+      <button hm-tap="endRound()"> End Round</button>
+      <!-- Display NPCs : {{game.displayNPC}} -->
+      <!-- Start Combat : {{game.battle}} -->
+      <!-- Game controls go here. -->
     </div>
-  </div>
-  <div id="game-info">
-    game info display
+    <div id="npc-controls">
+      {{npc}}
+      <div class="npc">
+        <input ng-model="npc.name">
+        <input ng-model="npc.health">
+        <input ng-model="npc.init">
+        <button hm-tap="addNPC()"> Add NPC</button>
+      </div>
+    </div>
+    <div id="game-info">
+      game info display
+    </div>
   </div>
 
   <hr/>

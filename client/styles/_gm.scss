@@ -1,0 +1,24 @@
+#game-controls{
+  @include span-columns(4);
+  @include borderThis(#ff98cc, 1px);
+  button{
+    @include buttonFactory(2em, 100%, green, 1px, 5px);
+    margin-bottom: 5px;
+    @include span-columns(6);
+    &:nth-child(even){
+      // @include span-columns(3);
+      @include omega();
+    }
+  }
+}
+
+#npc-controls{
+  @include span-columns(4);
+  @include borderThis(#ff98cc, 1px);
+}
+
+#game-info{
+  @include span-columns(4);
+  @include omega();
+  @include borderThis(#ff98cc, 1px);
+}

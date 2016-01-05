@@ -3,7 +3,11 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 		$reactive(this).attach($scope);
 		$scope.gameId = $stateParams.gameId;
 		this.subscribe("players", () => [$scope.gameId]);
+		this.subscribe("game", () => [$scope.gameId]);
 		$scope.helpers({
+			game(){
+				return Games.findOne({_id:$scope.gameId});
+			},
 			players(){
 				return Players.find({}, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
 			}
@@ -13,5 +17,5 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 
 		$scope.displayDetails = true;
 
-		
+
 }]);

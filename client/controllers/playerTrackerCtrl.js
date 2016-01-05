@@ -146,14 +146,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 		// 	$scope.playerId = sessionStorage.getItem('playerId');
 		// };
 
-		$scope.health = function(maxHealth, currentHealth){
-			return (currentHealth / maxHealth ) * 100 + "%";
-		};
-		$scope.healthRemaining = function(maxHealth, currentHealth){
-			if(currentHealth == maxHealth) return "100%";
-			var difference = maxHealth - currentHealth;
-			return ( difference/ maxHealth ) * 100 + "%";
-		};
+		
 
 		$scope.increaseHealth = function(amount){
 			$scope.healthDialog = false;
@@ -275,15 +268,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			// return false;
 		};
 
-		$scope.barColor = function(current,max){
-			if(current < (max/3)){
-				return "danger";
-			} else if (current < (max/2)) {
-				return "warning";
-			} else{
-				return "good";
-			}
-		};
+
 
 		$scope.pushCondition = function(conditionIndex){
 			console.log("pushing conditon");

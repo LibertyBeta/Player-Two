@@ -207,6 +207,12 @@ Meteor.methods({
     // return false;
     if(dmCheck) return true;
     return false;
+  },
+
+  toggleNPC : function(gameId){
+    var game = Games.findOne({_id:gameId, dm:Meteor.userId()});
+    if(game.displayNPC == 1) return Games.update({_id:gameId, dm:Meteor.userId()}, {$set:{displayNPC:0}})
+    else return Games.update({_id:gameId, dm:Meteor.userId()}, {$set:{displayNPC:1}})
   }
 
 });

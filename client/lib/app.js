@@ -258,6 +258,13 @@ angular.module('player-tracker').directive('ptPlate',function(){
 					return "good";
 				}
 			};
+			if(attr.type != "gm"){
+				$scope.showNPC = function(isNPC){
+					if(isNPC !== true ) return true;
+					if($scope.game.displayNPC == 1 && $scope.game.battle.round > 1) return true;
+					else return false;
+				}
+			}
 		},
 		templateUrl:  function(elem, attr){
 			if(attr.type == "gm"){
