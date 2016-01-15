@@ -235,6 +235,10 @@ angular.module('player-tracker').directive('ptPlate',function(){
 
 				};
 
+				$scope.initRoll = function(id,roll){
+					Meteor.call("setInit", id, {init:roll, round:0});
+				}
+
 				$scope.remove = function(id){
 					Meteor.call("removeNPC", id, function(err, result){
 						if(err){
@@ -259,9 +263,10 @@ angular.module('player-tracker').directive('ptPlate',function(){
 				}
 			};
 			if(attr.type != "gm"){
-				$scope.showNPC = function(isNPC){
+				$scope.showNPC = function(show, isNPC, battle){
 					if(isNPC !== true ) return true;
-					if($scope.game.displayNPC == 1 && $scope.game.battle.round > 1) return true;
+					// if(show) return true;
+					if(show == 1 && !angular.equals({}, battle) && battle.round >= 1) return true;
 					else return false;
 				}
 			}

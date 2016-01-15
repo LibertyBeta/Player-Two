@@ -105,7 +105,8 @@ Meteor.methods({
   endBattle : function(id){
     console.log("ending fight: " + id);
     Games.update({_id:id}, { $set:{battle: false}});
-    Players.update({game:id}, { $set:{battle: {}}});
+    var result = Players.update({game:id}, { $set:{battle:{}}}, {multi: true});
+    console.log(result);
   },
 
   pushCondition : function(conditionObject, playerId){
@@ -181,9 +182,18 @@ Meteor.methods({
     );
   },
 
-  endRoud : function(id){
+  endRound : function(id){
     Players.update(
       {_id:id},
+      {$inc:
+        {"battle.round":1}
+      }
+    );
+  },
+
+  advanceRound : function(id, round){
+    Players.update(
+      {gameId:id, "battle.round": {$lt:round}},
       {$inc:
         {"battle.round":1}
       }

@@ -2,8 +2,8 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 	function ($scope, $reactive, $stateParams, $meteor) {
 		$reactive(this).attach($scope);
 		$scope.gameId = $stateParams.gameId;
-		this.subscribe("players", () => [$scope.gameId]);
-		this.subscribe("game", () => [$scope.gameId]);
+		$scope.subscribe("players", () => [$scope.gameId]);
+		$scope.subscribe("game", () => [$scope.gameId]);
 		$scope.helpers({
 			game(){
 				return Games.findOne({_id:$scope.gameId});

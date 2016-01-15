@@ -61,6 +61,23 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 				console.log(error);
 				console.log(result);
 			});
+		};
+
+		$scope.endTurn = function(){
+			console.log($scope.players[0]._id);
+			Meteor.call("endRound", $scope.players[0]._id, function(error, result){
+				if(error)console.error(error);
+			});
+		};
+
+		$scope.endRound = function(){
+			Meteor.call("advanceRound", $scope.gameId, $scope.players[$scope.players.lenght-1].battle.round, function(error, result){
+				if(error) console.error(error);
+			})
+		};
+
+		$scope.endCombat = function(){
+			Meteor.call('endBattle', $scope.gameId, function(error, result){});
 		}
 
 

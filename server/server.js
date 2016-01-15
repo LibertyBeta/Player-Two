@@ -20,7 +20,8 @@ Players.allow({
 		// return false;
 	},
 	update: function(userId, doc, fieldNames, modifier){
-		if(userId == doc.owner){
+		var dmCheck  = Games.findOne({_id:doc.game, dm:userId});
+		if(userId == doc.owner || dmCheck){
 				return true;
 		} else {
 			return false;

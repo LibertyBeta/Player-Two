@@ -212,6 +212,19 @@ body, html, .container{
 			// @include span-columns(1);
 		}
 	}
+	&.gm{
+		.controls{
+			*{
+				@include span-columns(4);
+			}
+			:nth-child(3n+3){
+				@include omega();
+			}
+			button{
+	      @include buttonFactory(100%, 1en, $positive, 1px, 1px);
+	    }
+		}
+	}
 
 }
 

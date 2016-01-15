@@ -1,5 +1,5 @@
-angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$reactive', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval",
-	function ($scope, $reactive, $filter, $rootScope, $stateParams, $meteor, $location, $interval) {
+angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$reactive', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval","$http",
+	function ($scope, $reactive, $filter, $rootScope, $stateParams, $meteor, $location, $interval, $http) {
 		$reactive(this).attach($scope);
 		$scope.url = $location.absUrl();
 		$scope.gameId = $stateParams.gameId;
@@ -109,6 +109,23 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			}
 		});
 
+		// $scope.$watch("playerRecord.currentHealth", function(newVal, oldVal) {
+		// 	console.log("newVal", newVal);
+		// 	var amount = (newVal/$scope.playerRecord.maxHealth)*100;
+		// 	console.log(amount);
+		// 	var urlNow = "FAIL";
+		// 	if(amount < 1) urlNow = 'http://10.65.68.27/sensorview/Api.ashx?0085D4D4/off';
+		// 	else urlNow = 'http://10.65.68.27/sensorview/Api.ashx?0085D4D4/dim/' + amount;
+		// 	$http({
+		// 		method: 'POST',
+		// 		url: urlNow
+		// 	}).then(function successCallback(response) {
+		// 			console.log(response);
+		// 		}, function errorCallback(response) {
+		// 			console.log(response);
+		// 		});
+		// });
+
 		$scope.$watch("game.name", function(newValue, oldValue){
 
 			if(newValue){
@@ -146,11 +163,13 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 		// 	$scope.playerId = sessionStorage.getItem('playerId');
 		// };
 
-		
+
 
 		$scope.increaseHealth = function(amount){
 			$scope.healthDialog = false;
 			Meteor.call("increaseHealth", $scope.playerRecord._id, amount);
+
+
 		};
 
 
@@ -159,6 +178,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 		$scope.decreaseHealth = function(amount){
 			$scope.healthDialog = false;
 			Meteor.call("decreaseHealth", $scope.playerRecord._id, amount);
+
 		};
 
 		$scope.healthDialogShow = function(type){
