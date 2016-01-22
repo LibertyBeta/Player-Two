@@ -231,7 +231,13 @@ angular.module('player-tracker').directive('ptPlate',function(){
 					Meteor.call("decreaseHealth", id, amount);
 				};
 
-				$scope.kill = function(amount){
+				$scope.kill = function(id, amount, temp){
+					console.log("INFO DUMP", id +"\n"+amount+"\n"+temp);
+					if(!angular.equals(temp, {})){
+						Meteor.call("decreaseHealth", id, temp.currentHealth);
+					} else {
+						Meteor.call("decreaseHealth", id, amount);
+					}
 
 				};
 
@@ -247,6 +253,12 @@ angular.module('player-tracker').directive('ptPlate',function(){
 
 						}
 					})
+				};
+
+
+				$scope.popCondition = function(id, object){
+					// console.log(index);
+					Meteor.call("popCondition", angular.copy(object), id);
 				};
 			}
 			$scope.health = function(maxHealth, currentHealth){

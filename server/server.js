@@ -70,7 +70,7 @@ Meteor.publish('game', function (id) {
 });
 
 Meteor.publish('players', function (passData) {
-	console.log("Game ID id is " + passData);
+	console.log("Subscribing Players for Game ID " + passData);
 	// console.log(Players.find({ game : passData },{ $sort : { battle: { init : 1, round: -1 } } }));
 	return Players.find({ game : passData });
 });

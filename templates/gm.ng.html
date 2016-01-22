@@ -17,12 +17,12 @@
       <!-- Game controls go here. -->
     </div>
     <div id="npc-controls">
-      {{npc}}
+      <header>Add an NPC</header>
       <div class="npc">
-        <input ng-model="npc.name">
-        <input ng-model="npc.health">
-        <input ng-model="npc.init">
-        <button hm-tap="addNPC()"> Add NPC</button>
+        <input class="name" ng-model="npc.name" placeholder="NPC Name">
+        <input ng-model="npc.health" placeholder="NPC Health">
+        <input ng-model="npc.init" placeholder="NPC initive roll">
+        <button hm-tap="addNPC()">Add NPC</button>
       </div>
     </div>
     <div id="game-info">
@@ -32,6 +32,7 @@
 
   <hr/>
   <div>
+    {{Players}}
     <pt-plate type="gm" ng-repeat="partyMember in players">
 
     </pt-plate>
