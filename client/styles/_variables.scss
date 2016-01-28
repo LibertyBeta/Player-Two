@@ -21,8 +21,8 @@ $pad: 20px;
 $conditons: "posion","exhaust","prone","blind";
 
 //breakpoints
-$mobile: new-breakpoint(max-width $small 4);
-$smallscreen: new-breakpoint(max-width $medium);
+$mobile: new-breakpoint(min-width $small 500px 4);
+// $smallscreen: new-breakpoint(max-width $small, 6);
 
 $visual-grid: true;
 

@@ -1,6 +1,12 @@
+
 #game-controls{
   @include span-columns(4);
   @include borderThis(#ff98cc, 1px);
+
+  .body{
+    @include span-columns(12);
+    @include omega();
+  }
   button{
     @include buttonFactory(2em, 100%, green, 1px, 5px);
     margin-bottom: 5px;
@@ -9,7 +15,23 @@
       // @include span-columns(3);
       @include omega();
     }
+  }
 
+  button.toggle{
+    display: none !important;
+    @include span-columns(1);
+    @include buttonFactory(2em, 2em, red, 1px, 5px);
+    float:right;
+  }
+  @include media(min-width $small max-width $medium, 6) {
+    button.toggle{
+      display: block !important;
+    }
+  }
+  @include media(max-width $small, 6) {
+    button.toggle{
+      display: block !important;
+    }
   }
 }
 
@@ -37,4 +59,10 @@
   @include span-columns(4);
   @include omega();
   @include borderThis(#ff98cc, 1px);
+}
+
+.mobile-header{
+  @include span-columns(12);
+  @include omega();
+
 }

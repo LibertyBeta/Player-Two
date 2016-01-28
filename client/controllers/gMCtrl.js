@@ -26,6 +26,8 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 			}
 		];
 		// $scope.subscribe("players", () => [$scope.gameId]);
+		$scope.controlsHide = false;
+		$scope.npsHide = false;
 		$scope.subscribe("players", () => {
 			return [$scope.getReactively("gameId")]
 		});
@@ -116,6 +118,23 @@ angular.module('player-tracker').controller('GMCtrl', ['$scope', '$stateParams',
 			$scope.showConditons = false;
 		};
 
+		$scope.toggleControls = function(){
+			console.log("ARGE");
+			if($scope.controlsHide){
+				$scope.controlsHide = false;
+			} else {
+				$scope.controlsHide = true;
+			}
+		}
+
+		$scope.toggleNPC = function(){
+			console.log("ARGE");
+			if($scope.npcHide){
+				$scope.npcHide = false;
+			} else {
+				$scope.npcHide = true;
+			}
+		}
 
 
 
