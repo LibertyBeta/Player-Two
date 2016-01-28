@@ -1,7 +1,7 @@
 //values
 @import "{wolves:bourbon}/bourbon";
-@import '_variables';
-@import '_mixins';
+@import 'variables';
+@import 'mixins';
 @import "{wolves:neat}/neat";
 
 //Page specific styles
@@ -12,7 +12,7 @@
 body, html, .container{
 	margin: 0;
 	padding: 0;
-	@include fill-parent();
+	// @include fill-parent();
 	height: 100%;
 	// background-color: $background;
 	.top-row{
@@ -22,7 +22,6 @@ body, html, .container{
 }
 
 #view{
-	@include outer-container;
 	height: 100%;
 	.play{
 		background-color: white;
@@ -230,8 +229,9 @@ body, html, .container{
 }
 
 .player{
-	@include span-columns(12);
-	@include omega;
+	// @include span-columns(12);
+	// @include omega;
+	@include outer-container;
 	@include bar(50px, 100%);
 	.health-bar {
 		-webkit-border-bottom-left-radius: 0;
@@ -436,6 +436,9 @@ body, html, .container{
   to { background-color: $battle;border: 2px solid darken($battle, 20%);color: darken($battle, 35%);}
 }
 
+.plate-grid{
+	@include outer-container;
+}
 .overlay{
 	z-index: 10000;
 	position: absolute;

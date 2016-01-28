@@ -4,7 +4,7 @@
   {{gameId}}
   <hr/>
   <!-- {{players}} -->
-  <div class="top-row">
+  <div id="gm-top">
     <div id="game-controls">
       <div class="mobile-header"> Game Controls<button class="toggle" hm-tap="toggleControls()">=</button></div>
       <div class="body" ng-hide="controlsHide">
@@ -32,7 +32,7 @@
   </div>
 
   <hr/>
-  <div>
+  <div class="plate-grid">
     {{Players}}
     <pt-plate type="gm" ng-repeat="partyMember in players">
 

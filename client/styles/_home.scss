@@ -1,6 +1,5 @@
 .games{
-  @include span-columns(12);
-  @include omega();
+	@include outer-container;
   .game-list{
     @include span-columns(5);
     ul{
