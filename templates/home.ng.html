@@ -2,19 +2,25 @@
 	<pt-top></pt-top>
 	<button ng-click="logout()"> THIS IS A TEMP LOGOUT BUTTON </button>
 
-	<!-- <div ng-show='join'>
-    <hr/>
-    {{ theGame.gameId }}
-    <form name="theForm" ng-submit='joinForm()'>
-      {{ theGame.gameId }}
-      <input type='text' ng-model='gameId' placeholder='Put your game id here'>
-      <button type='submit'> joine game</button>
-    </form>
-  </div> -->
-
 	<div class='games'>
 		<div class='alert' ng-hide='$root.currentUser'>
 			Set up a user account or login to see your joinged games.
+		</div>
+		<div class="controls">
+			<div id="add">
+				<button class='main' hm-tap='create = true' ng-hide='create'> + New Game</button>
+				<form name="otherForm" ng-submit='createForm()' ng-show='create'>
+					<input type='text' ng-model='gameName' placeholder='Game Name Here'>
+					<button class='form' type='submit'>Start</button>
+				</form>
+			</div>
+			<div id="join">
+				<button class='main' hm-tap='join = true' ng-hide='join'> + Join Game</button>
+		    <form name="theForm" ng-submit='joinForm()' ng-show='join'>
+		      <input type='text' ng-model='gameId' placeholder='Put your game id here'>
+		      <button class='form' type='submit'>Join</button>
+		    </form>
+		  </div>
 		</div>
 		<div class='game-list'>
 
@@ -31,21 +37,6 @@
 				</li>
       </ul>
 		</div>
-		<div class="controls">
-			<div id="add">
-				<span hm-tap='create = true'> Clik here to start a new game</span>
-				<form name="otherForm" ng-submit='createForm()' ng-show='create'>
-					<input type='text' ng-model='gameName' placeholder='Game Name Here'>
-					<button type='submit'> start game</button>
-				</form>
-			</div>
-			<div id="join">
-				<span hm-tap='join = true'> Clik here to Join a game</span>
-		    <form name="theForm" ng-submit='joinForm()' ng-show='join'>
-		      <input type='text' ng-model='gameId' placeholder='Put your game id here'>
-		      <button type='submit'> joine game</button>
-		    </form>
-		  </div>
-		</div>
+
 	</div>
 </div>

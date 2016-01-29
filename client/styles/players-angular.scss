@@ -9,12 +9,15 @@
 @import '_gm';
 @import '_top';
 
+*{
+	font-family: 'Press Start 2P', cursive;
+}
 body, html, .container{
 	margin: 0;
 	padding: 0;
 	// @include fill-parent();
 	height: 100%;
-	// background-color: $background;
+	background-color: $background;
 	.top-row{
 		@include span-columns(12);
 		@include omega();
@@ -171,8 +174,9 @@ body, html, .container{
 	-webkit-user-select: none;
 	@include bar(20px, 100%);
 	background-color: darken($plates, 20);
-	border-radius: 5px;
-	border: $plates 3px solid;
+	// border-radius: 5px;
+	// border: $plates 3px solid;
+	@include bitBoxBorder(3px, $plates, darken($plates, 20));
 	// display: inline-block;
 	width: 20%;
 	margin: 2%;

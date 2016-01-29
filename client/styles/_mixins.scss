@@ -52,7 +52,7 @@
 @mixin buttonFactory($height, $width, $color, $border, $radius){
 	-webkit-user-select: none;
 	-webkit-touch-callout: none;
-	height: $height;
+	min-height: $height;
 	width: $width;
 	border: $border solid darken($color, 20%);
 	color: darken($color, 35%);
@@ -95,4 +95,48 @@
 	border: $radius solid lighten($color, 10%);
 	background: $color;
 	border-radius: $radius;
+}
+
+@mixin bitShadow( $width, $color, $bgcolor ) {
+  box-shadow:
+		0 $width $bgcolor,
+    0 (-$width) $bgcolor,
+    $width 0 $bgcolor,
+    -$width 0 $bgcolor,
+    0 0 0 $width $color,
+    0 2*$width 0 $width $color,
+    0 4*$width $color,
+    -2*$width 0 $color,
+    2*$width 0 $color,
+    -2*$width 2*$width $color,
+    2*$width 2*$width $color,//lower right
+    0 (-2*$width) $color;//top
+
+  margin: $width auto;
+  background-color: $bgcolor
+}
+
+@mixin bitBigBorder( $width, $color, $bgcolor ) {
+  box-shadow:
+    $width 0 $bgcolor,
+    -$width 0 $bgcolor,
+    0 (-$width) $bgcolor,
+    0 $width $bgcolor,
+    2*$width 0 $color,
+    -2*$width 0 $color,
+    0 (-2*$width) $color,
+    0 2*$width $color,
+    0 0 0 $width $color;
+		background-color: $bgcolor;
+  margin: 2*$width auto;
+}
+
+@mixin bitBoxBorder( $width, $color, $bgcolor ) {
+	box-shadow:
+    $width 0 $color,
+    -$width 0 $color,
+    0 (-$width) $color,
+    0 $width $color;
+	background-color: $bgcolor;
+  margin: $width auto;
 }

@@ -85,6 +85,24 @@
     @include span-columns(4);
     @include omega();
     @include borderThis(#ff98cc, 1px);
+    button.toggle{
+      display: none !important;
+      @include span-columns(1);
+      @include buttonFactory(2em, 2em, red, 1px, 5px);
+      float:right;
+    }
+    @include media(min-width $small max-width $medium, 6) {
+      @include span-columns(3);
+      button.toggle{
+        display: block !important;
+      }
+    }
+    @include media(max-width $small, 6) {
+      @include span-columns(6);
+      button.toggle{
+        display: block !important;
+      }
+    }
   }
 
   .mobile-header{
