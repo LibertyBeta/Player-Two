@@ -1,8 +1,13 @@
 #top-bar{
   @include span-columns(12);
   // @include omega();
+  padding-top: 2px;
+  padding-bottom: 2px;
+  line-height: 1.3em;
+  font-size: 0.75em;
   background-color: $topBar;
   color: $white;
+  margin-bottom: 5px;
   title{
     text-align: center;
     @include span-columns(8);

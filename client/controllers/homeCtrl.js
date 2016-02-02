@@ -4,12 +4,17 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 		$scope.join = false;
 		$scope.game = false;
 		$scope.pageTitle = "Home Page";
-		this.subscribe("games");
+		$scope.userId = Meteor.userId();
+		// $scope.subscribe("games", () => [Meteor.userId()]);
+		this.subscribe('games', () => {
+	    return [ this.getReactively('userId') ];
+	  });
 		$scope.helpers({
-			userGames() {
-				return Games.find({users:Meteor.userId()})
+			games() {
+				return Games.find({});
 			}
 		});
+		$scope.userId = Meteor.userId();
 
 
 		$scope.create = false;
@@ -27,7 +32,8 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 					console.error(error);
 				} else {
 					console.log(result);
-					// $location.path("/play/"+data);
+					$location.path("/play/"+data).replace();
+					// $scope.$apply();
 				}
 			})
 		};
@@ -49,13 +55,15 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 				} else {
 					console.log(result);
 					// promise fulfilled
-					$location.path("/play/"+result);
+					$location.path("/play/"+result).replace();
+					$scope.$apply();
 				}
 			});
 		};
 
 		$scope.logout = function(){
-			Metor.logout();
+			Meteor.logout();
+			$location.path("/index");
 		};
 
 		// $meteor.collection("games").find({_id:$scope.partyId});

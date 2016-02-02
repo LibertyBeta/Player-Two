@@ -2,8 +2,12 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 	function ($scope, $reactive, $stateParams, $meteor) {
 		$reactive(this).attach($scope);
 		$scope.gameId = $stateParams.gameId;
-		this.subscribe("players", () => [$scope.gameId]);
+		$scope.subscribe("players", () => [$scope.gameId]);
+		$scope.subscribe("game", () => [$scope.gameId]);
 		$scope.helpers({
+			game(){
+				return Games.findOne({_id:$scope.gameId});
+			},
 			players(){
 				return Players.find({}, {sort:{ 'battle.round' : 1, 'battle.init': -1 }});
 			}
@@ -13,22 +17,5 @@ angular.module('player-tracker').controller('DisplayCtrl', ['$scope','$reactive'
 
 		$scope.displayDetails = true;
 
-		$scope.health = function(maxHealth, currentHealth){
-			return (currentHealth / maxHealth ) * 100 + "%";
-		};
-		$scope.healthRemaining = function(maxHealth, currentHealth){
-			if(currentHealth == maxHealth) return "100%";
-			var difference = maxHealth - currentHealth;
-			return ( difference/ maxHealth ) * 100 + "%";
-		};
 
-		$scope.barColor = function(current,max){
-			if(current < (max/3)){
-				return "danger";
-			} else if (current < (max/2)) {
-				return "warning";
-			} else{
-				return "good";
-			}
-		};
 }]);

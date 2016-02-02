@@ -1,20 +1,27 @@
 //values
-@import '_variables';
-@import '_mixins';
 @import "{wolves:bourbon}/bourbon";
+@import 'variables';
+@import 'mixins';
 @import "{wolves:neat}/neat";
 
 //Page specific styles
 @import '_home';
+@import '_gm';
 @import '_top';
 
+*{
+	font-family: 'Press Start 2P', cursive;
+}
 body, html, .container{
 	margin: 0;
 	padding: 0;
-	@include fill-parent();
+	// @include fill-parent();
 	height: 100%;
 	background-color: $background;
-
+	.top-row{
+		@include span-columns(12);
+		@include omega();
+	}
 }
 
 #view{
@@ -167,8 +174,9 @@ body, html, .container{
 	-webkit-user-select: none;
 	@include bar(20px, 100%);
 	background-color: darken($plates, 20);
-	border-radius: 5px;
-	border: $plates 3px solid;
+	// border-radius: 5px;
+	// border: $plates 3px solid;
+	@include bitBoxBorder(3px, $plates, darken($plates, 20));
 	// display: inline-block;
 	width: 20%;
 	margin: 2%;
@@ -208,12 +216,26 @@ body, html, .container{
 			// @include span-columns(1);
 		}
 	}
+	&.gm{
+		.controls{
+			*{
+				@include span-columns(4);
+			}
+			:nth-child(3n+3){
+				@include omega();
+			}
+			button{
+	      @include buttonFactory(100%, 1en, $positive, 1px, 1px);
+	    }
+		}
+	}
 
 }
 
 .player{
-	@include span-columns(12);
-	@include omega;
+	// @include span-columns(12);
+	// @include omega;
+	@include outer-container;
 	@include bar(50px, 100%);
 	.health-bar {
 		-webkit-border-bottom-left-radius: 0;
@@ -418,6 +440,9 @@ body, html, .container{
   to { background-color: $battle;border: 2px solid darken($battle, 20%);color: darken($battle, 35%);}
 }
 
+.plate-grid{
+	@include outer-container;
+}
 .overlay{
 	z-index: 10000;
 	position: absolute;
@@ -430,8 +455,9 @@ body, html, .container{
 		position: absolute;
 		z-index: 10001;
 		background: $white;
-		border-radius: 5px;
-		border: 1px solid darken($white, 20%);
+		// border-radius: 5px;
+		// border: 1px solid darken($white, 20%);
+		@include bitBoxBorder(4px, black, $white);
 		margin-top: 3em;
 		left: 50%;
 	  transform: translate(-50%, 0);

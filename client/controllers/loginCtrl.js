@@ -7,7 +7,7 @@ angular.module('player-tracker').controller('LoginCtrl', ['$scope', '$stateParam
 			console.log($scope.loginForm.$valid);
 			if(!$scope.loginForm.$valid) return false;
 			Meteor.loginWithPassword($scope.lForm.user, $scope.lForm.password, function(error, result){
-				if(error){
+				if(result){
 					console.log('Login success');
 				} else {
 					console.log('Login error - ', err);

@@ -20,7 +20,8 @@ Players.allow({
 		// return false;
 	},
 	update: function(userId, doc, fieldNames, modifier){
-		if(userId == doc.owner){
+		var dmCheck  = Games.findOne({_id:doc.game, dm:userId});
+		if(userId == doc.owner || dmCheck){
 				return true;
 		} else {
 			return false;
@@ -69,7 +70,7 @@ Meteor.publish('game', function (id) {
 });
 
 Meteor.publish('players', function (passData) {
-	console.log("Game ID id is " + passData);
+	console.log("Subscribing Players for Game ID " + passData);
 	// console.log(Players.find({ game : passData },{ $sort : { battle: { init : 1, round: -1 } } }));
 	return Players.find({ game : passData });
 });

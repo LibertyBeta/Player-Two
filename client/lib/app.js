@@ -6,9 +6,15 @@ angular.module('player-tracker').run(['$rootScope', '$state', function($rootScop
 			$state.go("index");
 			console.log("HIT AUTH ERROR");
 		}
+
+		if (rejection === 'DM_AUTH_REQUIRED') {
+			$state.go("home");
+			console.log("HIT AUTH ERROR");
+		}
 	});
 
 	Accounts.onLogin(function () {
+		console.log("Logging in");
     if($state.is('index')){
 			$state.go('home');
 		}
@@ -33,10 +39,13 @@ angular.module('player-tracker').run(['$rootScope', '$state', function($rootScop
   });
 
 	$rootScope.$watch('currentUser', function(){
-		if(!$rootScope.currentUser){
-			$state.go("index");
+		if (!Meteor.loggingIn()) {
+			if (Meteor.user() === null) {
+				$state.go("index");
+			}
 		}
-	})
+
+	});
 
 
 }]);
@@ -59,7 +68,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -90,7 +99,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -110,7 +119,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -130,7 +139,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 
 	        Meteor.autorun(function () {
 	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
+	            if (Meteor.user() === null) {
 	              deferred.reject('AUTH_REQUIRED');
 	            } else {
 	              deferred.resolve(Meteor.user());
@@ -145,21 +154,39 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 				url: '/gm/:gameId',
 				templateUrl: 'templates/gm.ng.html',
 				controller: 'GMCtrl',
-				currentUser: ($q) => {
-	        var deferred = $q.defer();
+				resolve:{
+					currentUser: ($q, $stateParams) => {
+		        var deferred = $q.defer();
+		        Meteor.autorun(function () {
+		          if (!Meteor.loggingIn()) {
+								// console.log("checking the dm id" + $stateParams.gameId);
+		            if (Meteor.user() === null) {
+		              deferred.reject('AUTH_REQUIRED');
+								} else {
+									//check to make sure the game is DM'ed by the current user
+		              deferred.resolve(Meteor.user());
+		            }
+		          }
+		        });
 
-	        Meteor.autorun(function () {
-	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() == null) {
-	              deferred.reject('AUTH_REQUIRED');
-	            } else {
-	              deferred.resolve(Meteor.user());
-	            }
-	          }
-	        });
+		        return deferred.promise;
+		      },
+					dm: ($q, $stateParams) =>{
+						console.log("checking for the DM. ");
+						var deferred = $q.defer();
+						Meteor.call("dmCheck", $stateParams.gameId, function(error, result){
+							if(error){
+								console.log(error);
+								deferred.reject('AUTH_REQUIRED');
+							} else {
+								if(result === true) deferred.resolve(Meteor.user());
+								else deferred.reject('DM_AUTH_REQUIRED');
+							}
+						});
+						return deferred.promise;
+					}
 
-	        return deferred.promise;
-	      }
+				}
 			})
 			.state('register', {
 				url: '/register',
@@ -193,7 +220,78 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 angular.module('player-tracker').directive('ptPlate',function(){
 	return{
 		restrict: 'E',
-		templateUrl: 'templates/player-plate.ng.html'
+		link: function($scope, elem, attr){
+			if(attr.type == "gm"){
+				$scope.increaseHealth = function(id, amount){
+					Meteor.call("increaseHealth", id, amount);
+				};
+
+				$scope.decreaseHealth = function(id, amount){
+					console.log(id + " . " + amount);
+					Meteor.call("decreaseHealth", id, amount);
+				};
+
+				$scope.kill = function(id, amount, temp){
+					console.log("INFO DUMP", id +"\n"+amount+"\n"+temp);
+					if(!angular.equals(temp, {})){
+						Meteor.call("decreaseHealth", id, temp.currentHealth);
+					} else {
+						Meteor.call("decreaseHealth", id, amount);
+					}
+
+				};
+
+				$scope.initRoll = function(id,roll){
+					Meteor.call("setInit", id, {init:roll, round:0});
+				}
+
+				$scope.remove = function(id){
+					Meteor.call("removeNPC", id, function(err, result){
+						if(err){
+
+						} else {
+
+						}
+					})
+				};
+
+
+				$scope.popCondition = function(id, object){
+					// console.log(index);
+					Meteor.call("popCondition", angular.copy(object), id);
+				};
+			}
+			$scope.health = function(maxHealth, currentHealth){
+				return (currentHealth / maxHealth ) * 100 + "%";
+			};
+
+			$scope.barColor = function(current,max){
+				if(current < (max/3)){
+					return "danger";
+				} else if (current < (max/2)) {
+					return "warning";
+				} else{
+					return "good";
+				}
+			};
+			if(attr.type != "gm"){
+				$scope.showNPC = function(show, isNPC, battle){
+					if(isNPC !== true ) return true;
+					// if(show) return true;
+					if(show == 1 && !angular.equals({}, battle) && battle.round >= 1) return true;
+					else return false;
+				}
+			}
+		},
+		templateUrl:  function(elem, attr){
+			if(attr.type == "gm"){
+				return 'templates/gm-plate.ng.html';
+			} if(attr.type=="player"){
+				return 'templates/plate.ng.html';
+			}else {
+				return 'templates/player-plate.ng.html';
+			}
+		}
 	};
 });
 

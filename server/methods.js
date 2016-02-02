@@ -6,7 +6,8 @@ Meteor.methods({
       inviteCode : '',
       createdAt: new Date(),
       users: [this.userId],
-      battle: false
+      battle: false,
+      displayNPC: true,
     });
     var aGame = Games.findOne({_id: promise});
     Games.update({_id:promise}, { $set:{inviteCode: aGame._id.substring(0,4) + aGame.name.substring(0,4).replace(" ", "_")}});
@@ -49,9 +50,23 @@ Meteor.methods({
 
       Games.update({_id:element.game}, { $addToSet:{users: this.userId}});
     }
+    return promise;
+  },
 
-
-
+  addNPC: function (element, gameId) {
+    console.log(element);
+    var promise = Players.insert({
+      name: element.name,
+      currentHealth: element.health,
+      maxHealth: element.health,
+      game: gameId,
+      tempHealth: {},
+      battle: element.battle,
+      conditions: [],
+      owner: this.userId,
+      npc: true,
+      createdAt: new Date()
+    });
     return promise;
   },
 
@@ -78,6 +93,10 @@ Meteor.methods({
     return promise;
   },
 
+  removeNPC: function(id){
+    return Players.remove({_id:id, owner:this.userId});
+  },
+
   startBattle: function(id) {
     console.log("GAME " + id + " IS ENTERING COMBAT");
     return Games.update({_id:id}, { $set:{battle: true}});
@@ -86,7 +105,8 @@ Meteor.methods({
   endBattle : function(id){
     console.log("ending fight: " + id);
     Games.update({_id:id}, { $set:{battle: false}});
-    Players.update({game:id}, { $set:{battle: {}}});
+    var result = Players.update({game:id}, { $set:{battle:{}}}, {multi: true});
+    console.log(result);
   },
 
   pushCondition : function(conditionObject, playerId){
@@ -120,7 +140,7 @@ Meteor.methods({
 
   decreaseHealth : function(id, amount){
     var playerDocument = Players.findOne(id);
-    console.log(Object.keys(playerDocument.tempHealth).length);
+    console.log(playerDocument);
     if(Object.keys(playerDocument.tempHealth).length !== 0){
       if(0 >= ( playerDocument.tempHealth.currentHealth - amount)){
         Players.update({_id:id}, {$set:{tempHealth:{}}});
@@ -162,8 +182,47 @@ Meteor.methods({
     );
   },
 
-  endRoud : function(id){
+  endRound : function(id){
+    Players.update(
+      {_id:id},
+      {$inc:
+        {"battle.round":1}
+      }
+    );
+  },
 
+  advanceRound : function(id, round){
+    Players.update(
+      {gameId:id, "battle.round": {$lt:round}},
+      {$inc:
+        {"battle.round":1}
+      }
+    );
+  },
+
+  changeGameDM : function(userId, gameId){
+    //first, check to see if there is already a dm. No overwriting the dm. EVER.
+    var dmCheck  = Games.findOne(gameId);
+    if(dmCheck.dm){
+      throw new Meteor.Error(503,"DM already exists");
+    } else {
+      return Games.update({_id:gameId}, {$set:{dm:userId}});
+    }
+  },
+
+  dmCheck : function(gameId){
+    console.log("Checking for game " + gameId);
+    var dmCheck  = Games.findOne({_id:gameId, dm:Meteor.userId()});
+    console.log(dmCheck);
+    // return false;
+    if(dmCheck) return true;
+    return false;
+  },
+
+  toggleNPC : function(gameId){
+    var game = Games.findOne({_id:gameId, dm:Meteor.userId()});
+    if(game.displayNPC == 1) return Games.update({_id:gameId, dm:Meteor.userId()}, {$set:{displayNPC:0}})
+    else return Games.update({_id:gameId, dm:Meteor.userId()}, {$set:{displayNPC:1}})
   }
 
 });

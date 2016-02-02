@@ -1,5 +1,5 @@
-angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$reactive', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval",
-	function ($scope, $reactive, $filter, $rootScope, $stateParams, $meteor, $location, $interval) {
+angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$reactive', '$filter', '$rootScope', '$stateParams', '$meteor', '$location', "$interval","$http",
+	function ($scope, $reactive, $filter, $rootScope, $stateParams, $meteor, $location, $interval, $http) {
 		$reactive(this).attach($scope);
 		$scope.url = $location.absUrl();
 		$scope.gameId = $stateParams.gameId;
@@ -109,6 +109,23 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			}
 		});
 
+		// $scope.$watch("playerRecord.currentHealth", function(newVal, oldVal) {
+		// 	console.log("newVal", newVal);
+		// 	var amount = (newVal/$scope.playerRecord.maxHealth)*100;
+		// 	console.log(amount);
+		// 	var urlNow = "FAIL";
+		// 	if(amount < 1) urlNow = 'http://10.65.68.27/sensorview/Api.ashx?0085D4D4/off';
+		// 	else urlNow = 'http://10.65.68.27/sensorview/Api.ashx?0085D4D4/dim/' + amount;
+		// 	$http({
+		// 		method: 'POST',
+		// 		url: urlNow
+		// 	}).then(function successCallback(response) {
+		// 			console.log(response);
+		// 		}, function errorCallback(response) {
+		// 			console.log(response);
+		// 		});
+		// });
+
 		$scope.$watch("game.name", function(newValue, oldValue){
 
 			if(newValue){
@@ -146,18 +163,13 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 		// 	$scope.playerId = sessionStorage.getItem('playerId');
 		// };
 
-		$scope.health = function(maxHealth, currentHealth){
-			return (currentHealth / maxHealth ) * 100 + "%";
-		};
-		$scope.healthRemaining = function(maxHealth, currentHealth){
-			if(currentHealth == maxHealth) return "100%";
-			var difference = maxHealth - currentHealth;
-			return ( difference/ maxHealth ) * 100 + "%";
-		};
+
 
 		$scope.increaseHealth = function(amount){
 			$scope.healthDialog = false;
 			Meteor.call("increaseHealth", $scope.playerRecord._id, amount);
+
+
 		};
 
 
@@ -166,6 +178,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 		$scope.decreaseHealth = function(amount){
 			$scope.healthDialog = false;
 			Meteor.call("decreaseHealth", $scope.playerRecord._id, amount);
+
 		};
 
 		$scope.healthDialogShow = function(type){
@@ -193,7 +206,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 				}
 			}
 			$scope.healthDialog = true;
-		}
+		};
 
 		$scope.temporaryForm = function() {
 			$scope.temp = true;
@@ -203,6 +216,20 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			$scope.temp = false;
 			Meteor.call("setTempHealth", $scope.playerRecord._id, {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput});
 			// $scope.playerRecord.tempHealth = {currentHealth:$scope.tempInput, maxHealth:$scope.tempInput};
+		};
+
+		$scope.becomeDM = function(){
+			console.log("Trying to become DM.");
+			Meteor.call("changeGameDM", Meteor.userId(), $scope.game._id, function(error, result){
+				if(error){
+					//Handle the error
+					console.error(error);
+				} else {
+					console.log("trying to path");
+					$location.path("/gm/"+$scope.game._id);
+					$scope.$apply();
+				}
+			});
 		};
 
 		$scope.leave = function() {
@@ -237,15 +264,17 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 
 		$scope.battlePosition = function(){
 			//filter the array
-		  var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
+			if($scope.game.battle){
+		  	var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
 
-		  //get the index
-		  var index = $scope.players.indexOf(foundItem);
-			return index + 1;
+		  	//get the index
+		  	var index = $scope.players.indexOf(foundItem);
+				return index + 1;
+			}
 		};
 
 		$scope.endRound = function(){
-			$scope.playerRecord.battle.round++;
+			Meteor.call("setInit", $scope.playerRecord._id, function(error, result){});
 
 		};
 
@@ -259,15 +288,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 			// return false;
 		};
 
-		$scope.barColor = function(current,max){
-			if(current < (max/3)){
-				return "danger";
-			} else if (current < (max/2)) {
-				return "warning";
-			} else{
-				return "good";
-			}
-		};
+
 
 		$scope.pushCondition = function(conditionIndex){
 			console.log("pushing conditon");

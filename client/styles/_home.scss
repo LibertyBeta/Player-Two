@@ -1,28 +1,120 @@
 .games{
-  @include span-columns(12);
-  @include omega();
+	@include outer-container;
+	// @include row();
   .game-list{
-    @include span-columns(4);
+		@include shift(0.5);
+    @include span-columns(10 of 24);
+		@include media(min-width $small max-width $medium, 6) {
+			@include shift(0);
+      @include span-columns(6);
+			padding: 8px;
+    }
+
+		@include media(max-width $small, 6) {
+			@include shift(0);
+      @include span-columns(6);
+			padding: 8px;
+			// @include shift-in-context(6);
+    }
+    ul{
+      list-style: none;
+      // font-family: 'Press Start 2P', cursive;
+      font-size: 0.75em;
+      padding-left:0.5px;
+      li{
+				@include span-columns(12);
+				overflow: visible;
+        // @include borderThis($nutural, 4px);
+				@include bitBigBorder(3px, $bitbox, white);
+        padding: 2px;
+				// min-height: 1.5em;
+        margin-bottom: 15px;
+				margin-top: 0px;
+        .name{
+
+          @include span-columns(4);
+          @include omega();
+          vertical-align: center;
+        }
+        .gm{
+          @include borderThis($negative, 2px);
+          @include span-columns(2);
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
+        }
+        .play-link{
+          @include span-columns(2);
+          @include borderThis($positive, 2px);
+          background-color: $positive;
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
+        }
+        .display{
+          @include span-columns(3);
+          @include borderThis($nutural, 2px);
+          text-align: center;
+          text-decoration: none;
+          vertical-align: center;
+        }
+      }
+    }
   }
   .controls{
+		padding: 6px;
     @include span-columns(6);
-    @include shift(2);
+		@include media(min-width $small max-width $medium, 6) {
+      @include span-columns(6);
+    }
+    @include media(max-width $small, 6) {
+      @include span-columns(6);
+
+    }
+		button{
+			&.main{
+				@include buttonFactory(2em, 100%, $nutural, 3px, 0);
+
+				@include fill-parent();
+			}
+			&.form{
+				@include buttonFactory(1.5em, 100%, $nutural, 2px, 2px);
+				@include span-columns(3 of 6);
+			}
+		}
+
+		input{
+			@include span-columns(3 of 6);
+		}
     #add{
       padding: 5px;
-      @include borderThis(#ff98cc, 5px);
+      @include bitBoxBorder(3px, $bitbox, white);
       min-height: 2em;
-      width: 100%;
       @include span-columns(6);
-      span{
-        @include buttonFactory(1.5em, 100%, $nutural, 2px, 2px);
-      }
+			@include media(min-width $small max-width $medium, 6) {
+	      @include span-columns(3);
+	    }
+	    @include media(max-width $small, 6) {
+	      @include span-columns(6);
+	    }
+
     }
     #join{
       padding: 5px;
+			@include bitBoxBorder(3px, $bitbox, white);
+			min-height: 2em;
+			// @include borderThis(#ff98cc, 5px);
       @include span-columns(6);
-      min-height: 2em;
+			@include media(min-width $small max-width $medium, 6) {
+	      @include span-columns(3);
+	    }
+	    @include media(max-width $small, 6) {
+	      @include span-columns(6);
+	    }
+
       // width: 100%;
-      @include borderThis(#ff98cc, 5px);
+
+
     }
   }
 }
