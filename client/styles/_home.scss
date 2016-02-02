@@ -18,16 +18,18 @@
     }
     ul{
       list-style: none;
-      font-family: 'Press Start 2P', cursive;
+      // font-family: 'Press Start 2P', cursive;
       font-size: 0.75em;
       padding-left:0.5px;
       li{
-        width: 100%;
+				@include span-columns(12);
+				overflow: visible;
         // @include borderThis($nutural, 4px);
 				@include bitBigBorder(3px, $bitbox, white);
-        padding: 3px;
-				min-height: 1.5em;
-        margin-top: 15px;
+        padding: 2px;
+				// min-height: 1.5em;
+        margin-bottom: 15px;
+				margin-top: 0px;
         .name{
 
           @include span-columns(4);

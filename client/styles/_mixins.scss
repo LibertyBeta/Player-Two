@@ -50,6 +50,7 @@
 }
 
 @mixin buttonFactory($height, $width, $color, $border, $radius){
+	outline: none;
 	-webkit-user-select: none;
 	-webkit-touch-callout: none;
 	min-height: $height;

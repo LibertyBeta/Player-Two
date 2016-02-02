@@ -455,8 +455,9 @@ body, html, .container{
 		position: absolute;
 		z-index: 10001;
 		background: $white;
-		border-radius: 5px;
-		border: 1px solid darken($white, 20%);
+		// border-radius: 5px;
+		// border: 1px solid darken($white, 20%);
+		@include bitBoxBorder(4px, black, $white);
 		margin-top: 3em;
 		left: 50%;
 	  transform: translate(-50%, 0);
