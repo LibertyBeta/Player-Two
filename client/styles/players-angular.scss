@@ -8,6 +8,7 @@
 @import '_home';
 @import '_gm';
 @import '_top';
+@import '_index';
 
 *{
 	font-family: 'Press Start 2P', cursive;
@@ -31,23 +32,7 @@ body, html, .container{
 	}
 }
 
-.banner{
 
-	height: 13em;
-	@include span-columns(12);
-	@include omega();
-	background: url("images/header.png") center no-repeat;
-	background-size:cover;
-	color: $white;
-	margin-bottom: 1em;
-	h1{
-		text-align: center;
-		font-size: 3em;
-	}
-	h3{
-		text-align: center;
-	}
-}
 
 .grid{
 
@@ -104,44 +89,81 @@ body, html, .container{
 
 .form{
 	@include outer-container;
+	@include media(min-width $small max-width $medium, 6) {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	@include media(max-width $small, 6) {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
 	.user-form{
-		@include border-top-radius(5px);
-		@include border-right-radius(5px);
-		@include border-bottom-radius(5px);
-		@include border-left-radius(5px);
-		@include border-color(darken($grid, 10%));
-		@include border-style(solid);
-		@include border-width(3px);
-		@include outer-container;
-		background-color: $grid;
-		overflow: hidden;
-		@include span-columns(4);
-		@include shift(4);
+		@include bitBoxBorder(3px, $bitbox, white);
+		// background-color: $grid;
+		margin-top: 2em;
+		padding-top: 0.5em;
+		padding-bottom: 0.8em;
+		// overflow: hidden;
+		@include span-columns(6);
+		@include shift(3);
 		@include media(min-width $small max-width $medium, 6) {
 			@include shift(0);
-			@include span-columns(12);
+			@include span-columns(6);
+			// margin-left:20px;
+			// margin-right:20px;
 		}
 		@include media(max-width $small, 6) {
 			@include shift(0);
-			@include span-columns(12);
+			@include span-columns(6);
 		}
-		p{
+		div.row{
+			@include row();
+			// vertical-align: text-top;
 			label{
 				padding-left: 0.5em;
+				text-align: right;
+				line-height: 1.4em;
 				@include span-columns(5);
 
 				@include media(min-width $small max-width $medium, 6) {
 
-					@include span-columns(12);
+					@include span-columns(6);
 				}
 				@include media(max-width $small, 6) {
 
-					@include span-columns(12);
+					@include span-columns(6);
 				}
 			}
+			input{
+				// display: inline-block;
+				@include span-columns(5);
+
+				@include media(min-width $small max-width $medium, 6) {
+					@include shift(0);
+					@include span-columns(6);
+				}
+				@include media(max-width $small, 6) {
+					@include shift(0);
+					@include span-columns(6);
+				}
+				line-height: 1.4em;
+			}
 		}
+
 		.button{
-			@include buttonFactory(1.5em, '', $positive, 2px, 2px);
+			@include buttonFactory(3em, 100%, $positive, 4px, 2px);
+			@include span-columns(6);
+			@include shift(3);
+
+			@include media(min-width $small max-width $medium, 6) {
+				@include shift(0);
+				@include span-columns(6);
+			}
+			@include media(max-width $small, 6) {
+				@include shift(0);
+				@include span-columns(6);
+			}
+
 		}
 	}
 }

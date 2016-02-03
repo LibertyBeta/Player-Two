@@ -1,9 +1,9 @@
 <div class="container">
   <div class="form">
     <form id="registerForm" name="registerForm" class="user-form" ng-submit="formSubmit()" novalidate>
-      <p><label>User</label> <input ng-model="rForm.user" type="user" name="user" required="required"></p>
-      <p><label>Password</label> <input ng-model="rForm.password" type="password" name="password"  required="required"></p>
-      <p><label>Password Confirm</label> <input ng-model="rForm.password2" type="password" name="password2" same-as="rForm.password" required="required"></p>
+      <div class="row"><label>User</label> <input ng-model="rForm.user" type="user" name="user" required="required"></div>
+      <div class="row"><label>Password</label> <input ng-model="rForm.password" type="password" name="password"  required="required"></div>
+      <div class="row"><label>Password Confirm</label> <input ng-model="rForm.password2" type="password" name="password2" same-as="rForm.password" required="required"></div>
       <p class="error" ng-show="message"> {{message}}</p>
       <p><input class="button" type="submit" value="Register"></p>
     </form>

@@ -1,17 +1,15 @@
 angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', '$stateParams', '$meteor', '$location',
 	function ($scope,$reactive, $stateParams, $meteor, $location) {
 		$reactive(this).attach($scope);
-		$scope.join = false;
-		$scope.game = false;
 		$scope.pageTitle = "Home Page";
-		$scope.userId = Meteor.userId();
-		// $scope.subscribe("games", () => [Meteor.userId()]);
-		this.subscribe('games', () => {
-	    return [ this.getReactively('userId') ];
-	  });
+		$scope.userId = "NONE";
+		$scope.subscribe("userGames", () => [Meteor.userId()]);
+		// $scope.subscribe('games', () => {
+	  //   return [ this.getReactively('userId') ];
+	  // });
 		$scope.helpers({
-			games() {
-				return Games.find({});
+			ourGames() {
+				return Games.find({users:Meteor.userId()})
 			}
 		});
 		$scope.userId = Meteor.userId();

@@ -1,8 +1,8 @@
 <div class="container">
   <div class="form">
     <form id="loginForm" name="loginForm" class="user-form" ng-submit="formSubmit()" novalidate>
-      <p><label>User</label> <input ng-model="lForm.user" type="user" name="user" required="required"></p>
-      <p><label>Password</label> <input ng-model="lForm.password" type="password" name="password"  required="required"></p>
+      <div class="row"><label>User</label> <input ng-model="lForm.user" type="user" name="user" required="required"></div>
+      <div class="row"><label>Password</label> <input ng-model="lForm.password" type="password" name="password"  required="required"></div>
       <p class="error" ng-show="message"> {{message}}</p>
       <p><input class="button" type="submit" value="Login"></p>
     </form>

@@ -10,8 +10,8 @@ angular.module('player-tracker').controller('LoginCtrl', ['$scope', '$stateParam
 				if(result){
 					console.log('Login success');
 				} else {
-					console.log('Login error - ', err);
-					$scope.message = err.reason;
+					console.log('Login error - ', error);
+					$scope.message = error.reason;
 				}
 			});
 

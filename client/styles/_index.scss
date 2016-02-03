@@ -1,0 +1,110 @@
+.banner{
+
+	height: 13em;
+	// @include fill-parent();
+  // margin: 10px;
+	// @include omega();
+	// background: url("images/header.png") center no-repeat;
+	// background-size:cover;
+	background-color: $white;
+	// margin-bottom: 1em;
+  @include bitFrame(4px, black, white);
+  margin:20px;
+	h1{
+		text-align: center;
+		font-size: 3em;
+	}
+	h3{
+		text-align: center;
+	}
+
+}
+
+.join{
+  min-height: 10em;
+  padding-top: 3em;
+  // background-color: pink;
+  @include outer-container();
+
+  #loginButton{
+    @include span-columns(3);
+    @include shift(3 of 18);
+		@include media(min-width $small max-width $medium, 6) {
+			@include shift(0);
+			@include span-columns(6);
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		@include media(max-width $small, 6) {
+			@include shift(0);
+			@include span-columns(6);
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+    text-align: center;
+    vertical-align: middle;
+    a{
+      // @include span-columns(1);
+      display: block;
+      font-size: 2em;
+      @include buttonFactory(2em, 100%, $negative, 4px, 2px);
+      padding-top: 0.3em;
+      text-decoration: none;
+      // width: 100%;
+    }
+  }
+  #or{
+    @include span-columns(2);
+		@include media(min-width $small max-width $medium, 6) {
+
+			@include span-columns(6);
+		}
+		@include media(max-width $small, 6) {
+
+			@include span-columns(6);
+		}
+    padding-top: 0.5em;
+    font-size:  2em;
+    text-align: center;
+  }
+  #joinButton{
+    @include span-columns(3);
+		@include media(min-width $small max-width $medium, 6) {
+
+			@include span-columns(6);
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		@include media(max-width $small, 6) {
+
+			@include span-columns(6);
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+    // @include shift(3);
+    text-align: center;
+    vertical-align: middle;
+    a{
+      // @include span-columns(1);
+      display: block;
+      font-size: 2em;
+      @include buttonFactory(2em, 100%, $negative, 4px, 2px);
+      padding-top: 0.3em;
+      text-decoration: none;
+      // width: 100%;
+    }
+  }
+}
+
+#info{
+  padding-left: 10%;
+  padding-right:10%;
+  p{
+    line-height: 1.4em;
+    text-align: center;
+  }
+}
+
+#advertising{
+  background-color: yellow;
+}
