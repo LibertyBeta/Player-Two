@@ -7,8 +7,8 @@ angular-blaze-templates-compiler@0.0.1
 angular-meteor-data@0.1.0
 angular-templates@0.0.3
 angular-with-blaze@1.2.1
-angular:angular@1.4.8
-angular:angular-touch@1.4.8
+angular:angular@1.5.0
+angular:angular-touch@1.5.0
 angularui:angular-ui-router@0.2.15
 autoupdate@1.2.4
 babel-compiler@5.8.24_1

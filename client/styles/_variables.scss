@@ -4,13 +4,13 @@ $positive : #5bd55d;
 $negative : #d5695b;
 $nutural : #695bd5;
 $warning: #ff971b;
-$plates: #ddd;
+$plates: #bec2d1;
 $white: white;
 $battle: #c0fb19;
 $bitbox: gray;
-$topBar: darken($plates, 40%);
+$topBar: darken(#ddd, 40%);
 $grid: #e0e0e0;
-$background: #dfdce6;
+$background: #dcdee6;
 //SIZES
 $small : 480px;
 $medium : 992px;
@@ -27,7 +27,7 @@ $conditons: "posion","exhaust","prone","blind";
 // $mobile: new-breakpoint(min-width 500px 4);
 // $smallscreen: new-breakpoint(max-width $small, 6);
 
-$visual-grid: true;
+// $visual-grid: true;
 
 //fonts
 @import url(https://fonts.googleapis.com/css?family=Press+Start+2P);

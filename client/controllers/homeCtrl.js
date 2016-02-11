@@ -3,6 +3,7 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 		$reactive(this).attach($scope);
 		$scope.pageTitle = "Home Page";
 		$scope.userId = "NONE";
+		$scope.home = true;
 		$scope.subscribe("userGames", () => [Meteor.userId()]);
 		// $scope.subscribe('games', () => {
 	  //   return [ this.getReactively('userId') ];

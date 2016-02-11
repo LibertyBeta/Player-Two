@@ -1,8 +1,6 @@
 <div class="container play">
   <pt-top></pt-top>
   <pt-condtions ng-show="showConditons"></pt-condtions>
-  <hr/>
-  <!-- {{players}} -->
   <div id="gm-top">
     <div id="game-controls">
       <div class="mobile-header"> Game Controls<button class="toggle" hm-tap="toggleControls()">=</button></div>
@@ -32,8 +30,7 @@
   </div>
 
   <hr/>
-  <div class="plate-grid">
-    {{Players}}
+  <div id="plate-grid" class="wrapper">
     <pt-plate type="gm" ng-repeat="partyMember in players">
 
     </pt-plate>

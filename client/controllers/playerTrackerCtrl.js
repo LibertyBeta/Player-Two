@@ -167,7 +167,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 
 		$scope.increaseHealth = function(amount){
 			$scope.healthDialog = false;
-			Meteor.call("increaseHealth", $scope.playerRecord._id, amount);
+			Meteor.call("increaseHealth", $scope.playerRecord._id, $scope.damageInput);
 
 
 		};
@@ -177,7 +177,7 @@ angular.module('player-tracker').controller('PlayerTrackerCtrl', ['$scope', '$re
 
 		$scope.decreaseHealth = function(amount){
 			$scope.healthDialog = false;
-			Meteor.call("decreaseHealth", $scope.playerRecord._id, amount);
+			Meteor.call("decreaseHealth", $scope.playerRecord._id, $scope.damageInput);
 
 		};
 

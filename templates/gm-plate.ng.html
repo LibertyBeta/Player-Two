@@ -15,9 +15,9 @@
 		<input type="number" ng-model="partyMember.roll"><button hm-tap="initRoll(partyMember._id, partyMember.roll)">Set Init</button>
 	</div>
 	<div class="controls">
-		<button hm-tap="increaseHealth(partyMember._id, partyMember.dmInput)">Heal</button><input type="number" ng-model="partyMember.dmInput"><button hm-tap="decreaseHealth(partyMember._id, partyMember.dmInput)">Hurt</button>
-		<button hm-tap="kill(partyMember._id, partyMember.currentHealth, partyMember.tempHealth)">Kill</button>
-		<button hm-tap="conditionPopover(partyMember._id)">Add Condition</button>
-		<button hm-tap="remove(partyMember._id)" ng-show="partyMember.npc == true">Remove</button>
+		<button ng-click="increaseHealth(partyMember._id, partyMember.dmInput)">Heal</button><input type="number" ng-model="partyMember.dmInput"><button ng-click="decreaseHealth(partyMember._id, partyMember.dmInput)">Hurt</button>
+		<button ng-click="kill(partyMember._id, partyMember.currentHealth, partyMember.tempHealth)">Kill</button>
+		<button ng-click="conditionPopover(partyMember._id)">Add Condition</button>
+		<button ng-click="remove(partyMember._id)" ng-show="partyMember.npc == true">Remove</button>
 	</div>
 </div>

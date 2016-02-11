@@ -27,46 +27,56 @@
     </div>
   </div>
 
-  <div id="add-player" ng-hide="playerRecord">
-    <header>Add Player</header>
-    <div class="form">
-      <form ng-submit="joinGame()">
-        <input type="text" ng-model="player.name" required placeholder="You Character Name">
-        <input type="number" ng-model="player.currentHealth" required placeholder="Current Health">
-        <input type="number" ng-model="player.maxHealth" required placeholder="Max Health">
-        <input type="text" ng-model="player.recovery" ng-required="!$root.currentUser" ng-show="!$root.currentUser" placeholder="Recovery Passcode">
-        <!-- <input type="hidden" ng-model="player.gameId"> -->
-        <button> Join </button>
-      </form>
-    </div>
-    <span class="or" ng-hide="$root.currentUser"> or </span>
-    <div class="form" ng-hide="$root.currentUser">
-      <form ng-submit="returnToGame()">
-        <input type="text" ng-model="recovery.playerName" required placeholder="Recovery Name">
-        <input type="text" ng-model="recovery.recovery" required placeholder="Recovery Passcode">
-        <button> Recover Player </button>
-      </form>
-    </div>
-    <div class="form" ng-hide="$game.dm">
-      <button type="feature" hm-tap="dmWarn = true"> Become Game DM </button>
+  <div id="player-wrapper" ng-hide="playerRecord">
+    <div id="add-player">
+      <header>Add Player</header>
+      <div class="form">
+        <form ng-submit="joinGame()">
+          <input type="text" ng-model="player.name" required placeholder="You Character Name">
+          <input type="number" ng-model="player.currentHealth" required placeholder="Current Health">
+          <input type="number" ng-model="player.maxHealth" required placeholder="Max Health">
+          <input type="text" ng-model="player.recovery" ng-required="!$root.currentUser" ng-show="!$root.currentUser" placeholder="Recovery Passcode">
+          <!-- <input type="hidden" ng-model="player.gameId"> -->
+          <button> Join </button>
+        </form>
+      </div>
+      <span class="or" ng-hide="$root.currentUser"> or </span>
+      <div class="form" ng-hide="$root.currentUser">
+        <form ng-submit="returnToGame()">
+          <input type="text" ng-model="recovery.playerName" required placeholder="Recovery Name">
+          <input type="text" ng-model="recovery.recovery" required placeholder="Recovery Passcode">
+          <button> Recover Player </button>
+        </form>
+      </div>
+      <div class="form" ng-hide="$game.dm">
+        <button type="feature" hm-tap="dmWarn = true"> Become Game DM </button>
+      </div>
     </div>
   </div>
+
   <div class="player" ng-show="playerRecord">
     <pt-plate type="player"></pt-plate>
     <div class="controls">
       <div class="temp" ng-show="temp">
         <input type="number" ng-model="tempInput">
-        <button ng-click="setTemp()">Set</button>
+        <button ng-click="setTemp()">Set Temp Health</button>
       </div>
       <div class="negative">
         <!-- <button ng-click="decreaseHealth(10)"> - 10 </button> -->
         <!-- <button ng-click="decreaseHealth(1)"> - </button> -->
-        <button hm-tap="decreaseHealth(1)" hm-press="healthDialogShow('loss')"></button>
+        <!-- <button hm-tap="decreaseHealth(1)" hm-press="healthDialogShow('loss')"></button> -->
+        <button ng-click="decreaseHealth(1)"></button>
+      </div>
+      <div class="inputs">
+        <!-- <button ng-click="decreaseHealth(10)"> - 10 </button> -->
+        <!-- <button ng-click="decreaseHealth(1)"> - </button> -->
+        <input type="number" ng-model="damageInput" placeholder="dmg"/>
       </div>
       <div class="positive">
         <!-- <button ng-click="increaseHealth(1)"> + </button> -->
         <!-- <button ng-click="increaseHealth(10)"> + 10</button> -->
-        <button hm-tap="increaseHealth(1)" hm-press="healthDialogShow('gain')"></button>
+        <!-- <button hm-tap="increaseHealth(1)" hm-press="healthDialogShow('gain')"></button> -->
+        <button ng-click="increaseHealth(1)"></button>
       </div>
       <div class="nutural">
         <button class="nutural" ng-click="temporaryForm()">Temporary Hitpoints</button>
@@ -93,7 +103,7 @@
     </div>
   </div>
   <hr/>
-  <div class="party-plates">
+  <div id="plate-grid" class="wrapper">
     <pt-plate ng-repeat="partyMember in players" ng-if="partyMember._id!=playerRecord._id">
 
     </pt-plate>

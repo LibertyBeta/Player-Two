@@ -6,7 +6,7 @@
 		width: $width;
 		height: $height;
 		padding: 5px;
-		background: #ddd;
+		background: $plates;
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
 		border-radius: 5px;
@@ -175,11 +175,11 @@
 
 @mixin bitArrow($color, $bgcolor, $nextColor){
   box-shadow:
-    0px 5px 0px 0px $color,
-		0px 12px 0px -3px $color,
-		0px 19px 0px -6px $color,
-    0px 13px 0px 0px $nextColor;
-  margin-bottom: 13px;
+    // 0px 5px 0px 0px $color,
+		0px 8px 0px -4px $color,
+		0px 16px 0px -8px $color;
+    // 0px 6px 0px 0px $nextColor;
+  margin-bottom: 6px;
 }
 
 @mixin bitFrame( $width, $color, $bgcolor ){

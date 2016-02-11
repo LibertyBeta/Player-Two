@@ -1,6 +1,6 @@
 <div class='container'>
 	<pt-top></pt-top>
-	<button ng-click="logout()"> THIS IS A TEMP LOGOUT BUTTON </button>
+
 
 	<div class='games'>
 		<div class='alert' ng-hide='$root.currentUser'>
@@ -26,7 +26,7 @@
 
       <ul class="gameList">
         <li ng-repeat="userGame in ourGames" >
-					<div class="name">{{userGame.name}} lkjlkjlkjljlkjlkjlkjlkjlkjlkjlkj</div>
+					<div class="name">{{userGame.name}}</div>
 					<a class="gm" ng-show="userGame.dm == userId" href="/gm/{{userGame._id}}">gm</a>
 					<a class="play-link" ng-show="userGame.dm != userId" href="/play/{{userGame._id}}">Play</a>
           <a class="display" href="/display/{{userGame._id}}">Display</a>
