@@ -1,4 +1,4 @@
-<div class="player-plate" ng-show="showNPC(game.displayNPC,partyMember.npc, partyMember.battle)">
+<div class="player-plate" ng-repeat="partyMember in data" ng-show="showNPC(showNPC,partyMember.npc, partyMember.battle)" ng-if="partyMember._id!=player">
 	<header> {{ partyMember.name }}</header>
 	<span class="left" ng-show="displayDetails || gm">{{partyMember.tempHealth.maxHealth + " " + partyMember.currentHealth}}</span>
 	<div class="health-bar">

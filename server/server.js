@@ -51,7 +51,7 @@ Games.allow({
 	remove: function(userId, doc){
 
 		console.log("REMOVAL!");
-		return false;
+		return true;
 	},
 	update: function(userId, doc, fieldNames, modifier){
 		console.log("FALSEHOODS");
@@ -59,6 +59,17 @@ Games.allow({
 	},
 });
 
+Games.deny({
+  update: function (userId, docs, fields, modifier) {
+    // can't change owners
+    return _.contains(fields, 'owner');
+  },
+  remove: function (userId, doc) {
+    // can't remove locked documents
+    return true;
+  },
+  fetch: ['locked'] // no need to fetch 'owner'
+});
 
 Meteor.publish('games', function () {
 	return Games.find();

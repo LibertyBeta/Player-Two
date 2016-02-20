@@ -1,7 +1,5 @@
 <div class='container'>
 	<pt-top></pt-top>
-
-
 	<div class='games'>
 		<div class='alert' ng-hide='$root.currentUser'>
 			Set up a user account or login to see your joinged games.
@@ -9,8 +7,8 @@
 		<div class="controls">
 			<div id="add">
 				<button class='main' hm-tap='create = true' ng-hide='create'> + New Game</button>
-				<form name="otherForm" ng-submit='createForm()' ng-show='create'>
-					<input type='text' ng-model='gameName' placeholder='Game Name Here'>
+				<form name="otherForm" ng-submit='homeView.createForm()' ng-show='create'>
+					<input type='text' ng-model='homeView.gameName' placeholder='Game Name Here'>
 					<button class='form' type='submit'>Start</button>
 				</form>
 			</div>
@@ -25,14 +23,14 @@
 		<div class='game-list'>
 
       <ul class="gameList">
-        <li ng-repeat="userGame in ourGames" >
+        <li ng-repeat="userGame in homeView.ourGames" >
 					<div class="name">{{userGame.name}}</div>
-					<a class="gm" ng-show="userGame.dm == userId" href="/gm/{{userGame._id}}">gm</a>
-					<a class="play-link" ng-show="userGame.dm != userId" href="/play/{{userGame._id}}">Play</a>
+					<a class="gm" ng-show="userGame.dm == homeView.userId" href="/gm/{{userGame._id}}">gm</a>
+					<a class="play-link" ng-show="userGame.dm != homeView.userId" href="/play/{{userGame._id}}">Play</a>
           <a class="display" href="/display/{{userGame._id}}">Display</a>
 					<div class="invite">{{userGame.inviteCode}}</div>
         </li>
-				<li ng-hide="ourGames.length">
+				<li ng-hide="homeView.ourGames.length">
 					No Games. Why don't you start one.
 				</li>
       </ul>

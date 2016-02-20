@@ -60,25 +60,26 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 		$stateProvider
 			.state('home', {
 				url: '/home',
-				templateUrl: 'templates/home.ng.html',
-				controller: 'HomeCtrl',
+				template: '<home-view></home-view>',
+				// templateUrl: 'templates/home.ng.html',
+				// controller: 'HomeCtrl',
 				resolve: {
-	      currentUser: ($q) => {
-	        var deferred = $q.defer();
+		      currentUser: ($q) => {
+		        var deferred = $q.defer();
 
-	        Meteor.autorun(function () {
-	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() === null) {
-	              deferred.reject('AUTH_REQUIRED');
-	            } else {
-	              deferred.resolve(Meteor.user());
-	            }
-	          }
-	        });
+		        Meteor.autorun(function () {
+		          if (!Meteor.loggingIn()) {
+		            if (Meteor.user() === null) {
+		              deferred.reject('AUTH_REQUIRED');
+		            } else {
+		              deferred.resolve(Meteor.user());
+		            }
+		          }
+		        });
 
-	        return deferred.promise;
-	      }
-	    }
+		        return deferred.promise;
+		      }
+		    }
 		 })
 			.state('index', {
 				url: '/',
@@ -92,23 +93,26 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 			})
 			.state('play', {
 				url: '/play/:gameId',
-				templateUrl: 'templates/play.ng.html',
-				controller: 'PlayerTrackerCtrl',
-				currentUser: ($q) => {
-	        var deferred = $q.defer();
+				// templateUrl: 'templates/play.ng.html',
+				// controller: 'PlayerTrackerCtrl',
+				template: '<play-view></play-view>',
+				resolve: {
+		      currentUser: ($q) => {
+		        var deferred = $q.defer();
 
-	        Meteor.autorun(function () {
-	          if (!Meteor.loggingIn()) {
-	            if (Meteor.user() === null) {
-	              deferred.reject('AUTH_REQUIRED');
-	            } else {
-	              deferred.resolve(Meteor.user());
-	            }
-	          }
-	        });
+		        Meteor.autorun(function () {
+		          if (!Meteor.loggingIn()) {
+		            if (Meteor.user() === null) {
+		              deferred.reject('AUTH_REQUIRED');
+		            } else {
+		              deferred.resolve(Meteor.user());
+		            }
+		          }
+		        });
 
-	        return deferred.promise;
-	      }
+		        return deferred.promise;
+		      }
+		    }
 			})
 			.state('fight', {
 				url: '/play/:gameId/fight',
@@ -217,83 +221,7 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 		$urlRouterProvider.otherwise('/');
 }]);
 
-angular.module('player-tracker').directive('ptPlate',function(){
-	return{
-		restrict: 'E',
-		link: function($scope, elem, attr){
-			if(attr.type == "gm"){
-				$scope.increaseHealth = function(id, amount){
-					Meteor.call("increaseHealth", id, amount);
-				};
 
-				$scope.decreaseHealth = function(id, amount){
-					console.log(id + " . " + amount);
-					Meteor.call("decreaseHealth", id, amount);
-				};
-
-				$scope.kill = function(id, amount, temp){
-					console.log("INFO DUMP", id +"\n"+amount+"\n"+temp);
-					if(!angular.equals(temp, {})){
-						Meteor.call("decreaseHealth", id, temp.currentHealth);
-					} else {
-						Meteor.call("decreaseHealth", id, amount);
-					}
-
-				};
-
-				$scope.initRoll = function(id,roll){
-					Meteor.call("setInit", id, {init:roll, round:0});
-				}
-
-				$scope.remove = function(id){
-					Meteor.call("removeNPC", id, function(err, result){
-						if(err){
-
-						} else {
-
-						}
-					})
-				};
-
-
-				$scope.popCondition = function(id, object){
-					// console.log(index);
-					Meteor.call("popCondition", angular.copy(object), id);
-				};
-			}
-			$scope.health = function(maxHealth, currentHealth){
-				return (currentHealth / maxHealth ) * 100 + "%";
-			};
-
-			$scope.barColor = function(current,max){
-				if(current < (max/3)){
-					return "danger";
-				} else if (current < (max/2)) {
-					return "warning";
-				} else{
-					return "good";
-				}
-			};
-			if(attr.type != "gm"){
-				$scope.showNPC = function(show, isNPC, battle){
-					if(isNPC !== true ) return true;
-					// if(show) return true;
-					if(show == 1 && !angular.equals({}, battle) && battle.round >= 1) return true;
-					else return false;
-				}
-			}
-		},
-		templateUrl:  function(elem, attr){
-			if(attr.type == "gm"){
-				return 'templates/gm-plate.ng.html';
-			} if(attr.type=="player"){
-				return 'templates/plate.ng.html';
-			}else {
-				return 'templates/player-plate.ng.html';
-			}
-		}
-	};
-});
 
 angular.module('player-tracker').directive('ptTop',function(){
 	return{

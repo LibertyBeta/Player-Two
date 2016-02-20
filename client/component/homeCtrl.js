@@ -2,15 +2,15 @@ angular.module('player-tracker').controller('HomeCtrl', ['$scope', '$reactive', 
 	function ($scope,$reactive, $stateParams, $meteor, $location) {
 		$reactive(this).attach($scope);
 		$scope.pageTitle = "Home Page";
-		$scope.userId = "NONE";
+		this.userId = "NONE";
 		$scope.home = true;
-		$scope.subscribe("userGames", () => [Meteor.userId()]);
+		this.subscribe("userGames", () => { return [ this.getReactively("userId")] });
 		// $scope.subscribe('games', () => {
 	  //   return [ this.getReactively('userId') ];
 	  // });
 		$scope.helpers({
-			ourGames() {
-				return Games.find({users:Meteor.userId()})
+			ourGames: () => {
+				return Games.find({users : this.getReactively("userId")})
 			}
 		});
 		$scope.userId = Meteor.userId();
