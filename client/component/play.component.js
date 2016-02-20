@@ -270,14 +270,6 @@ angular.module('player-tracker').directive('playView', function () {
 				return angular.equals(this.playerRecord.battle, {});
 				// return false;
 			};
-
-
-			this.popCondition = (object) => {
-				// console.log(index);
-				Meteor.call("popCondition", angular.copy(object), $scope.playerRecord._id);
-
-
-			};
 		}
 	}
 });

@@ -51,6 +51,12 @@ angular.module('player-tracker').directive('ptPlate',function(){
 					Meteor.call("popCondition", angular.copy(object), id);
 				};
 			}
+
+			if(attr.type == "player"){
+				$scope.popCondition = function(object){
+					Meteor.call("popCondition", angular.copy(object), $scope.data._id);
+				};
+			}
 			$scope.health = function(maxHealth, currentHealth){
 				return (currentHealth / maxHealth ) * 100 + "%";
 			};
