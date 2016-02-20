@@ -7,15 +7,16 @@ angular.module('player-tracker').directive('playView', function () {
 			$reactive(this).attach($scope);
 			this.url = $location.absUrl();
 			this.gameId = $stateParams.gameId;
+      // this.game = {};
 			this.subscribe("players", () => [this.gameId]);
 			this.subscribe("game", () => [this.gameId]);
 			this.subscribe("playerRecord", () => [Meteor.userId()]);
 			// $scope.games = $scope.$meteorCollection(Games);
 			// $scope.game = {};
-			this.showConditons = false;
+			this.showConditions = false;
 			this.helpers({
 				game(){
-					return Games.findOne({_id:$scope.gameId});
+					return Games.findOne({_id:this.gameId});
 				},
 				players(){
 					return Players.find(
@@ -126,23 +127,23 @@ angular.module('player-tracker').directive('playView', function () {
 			// 	$scope.playerRecord = $meteor.object(Players,$scope.playerId);
 			// }
 
-			// this.joinGame = function(){
-			//
-			// 	this.player.game = this.gameId;
-			// 	console.log($scope.player);
-			// 	$meteor.call("addPlayer",$scope.player)
-			// 		.then(function(data) {
-			// 			console.log(data);
-			// 			this.playerId = data;
-			// 			this.playerRecord = $meteor.object(Players,$scope.playerId);
-			// 			sessionStorage.setItem('playerId', data);
-			// 			// console.log($scope.playerRecord);
-			// 			// console.log($scope.playerRecord.name);
-			// 		}, function(error) {
-			// 			// promise rejected, could log the error with: console.log('error', error);
-			// 			console.error(error);
-			// 		});
-			// };
+			this.joinGame = () =>{
+
+				this.player.game = this.gameId;
+				console.log($scope.player);
+				$meteor.call("addPlayer",this.player)
+					.then(function(data) {
+						console.log(data);
+						this.playerId = data;
+						this.playerRecord = $meteor.object(Players,this.playerId);
+						// sessionStorage.setItem('playerId', data);
+						// console.log($scope.playerRecord);
+						// console.log($scope.playerRecord.name);
+					}, function(error) {
+						// promise rejected, could log the error with: console.log('error', error);
+						console.error(error);
+					});
+			};
 
 
 			this.increaseHealth = (amount) => {
@@ -228,15 +229,15 @@ angular.module('player-tracker').directive('playView', function () {
 			};
 
 			this.initInit = () => {
-				Meteor.call("startBattle", $scope.game._id, function(error, result){
+				Meteor.call("startBattle", this.game._id, function(error, result){
 					console.log(error);
 					console.log(result);
 				});
 			};
 
 			this.setInit = () => {
-				Meteor.call("setInit", $scope.playerRecord._id, {
-					init: $scope.battle.roll,
+				Meteor.call("setInit", this.playerRecord._id, {
+					init: this.battle.roll,
 					round: 0
 				});
 				$scope.overlay = false;
@@ -244,41 +245,32 @@ angular.module('player-tracker').directive('playView', function () {
 
 			this.battlePosition = () =>{
 				//filter the array
-				if($scope.game.battle){
-			  	var foundItem = $filter('filter')($scope.players, { _id: $scope.playerRecord._id  }, true)[0];
+        // console.log(this.game);
+        // console.log(playCtrl.game);
+				if(this.game.battle){
+			  	var foundItem = $filter('filter')(this.players, { _id: this.playerRecord._id  }, true)[0];
 
 			  	//get the index
-			  	var index = $scope.players.indexOf(foundItem);
+			  	var index = this.players.indexOf(foundItem);
 					return index + 1;
 				}
 			};
 
 			this.endRound = () =>{
-				Meteor.call("setInit", $scope.playerRecord._id, function(error, result){});
+				Meteor.call("setInit", this.playerRecord._id, function(error, result){});
 
 			};
 
 			this.endBattle = () =>{
 				console.log("Ending the fight.");
-				Meteor.call('endBattle', $scope.gameId, function(error, result){});
+				Meteor.call('endBattle', this.gameId, function(error, result){});
 			};
 
-			this.noInit = function(){
-				return angular.equals($scope.playerRecord.battle, {});
+			this.noInit = () =>{
+				return angular.equals(this.playerRecord.battle, {});
 				// return false;
 			};
 
-
-
-			this.pushCondition = (conditionIndex) =>{
-				console.log("pushing conditon");
-
-				$scope.showConditons = false;
-
-				// if($scope.playerRecord.conditions.indexOf($scope.conditions[conditionIndex])==-1)$scope.playerRecord.conditions.push(angular.copy($scope.conditions[conditionIndex]));
-
-				Meteor.call("pushCondition", angular.copy($scope.conditions[conditionIndex]), $scope.playerRecord._id);
-			};
 
 			this.popCondition = (object) => {
 				// console.log(index);

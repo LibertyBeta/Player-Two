@@ -2,10 +2,10 @@ angular.module('player-tracker').directive('ptPlate',function(){
 	return{
 		restrict: 'E',
 		scope: {
-      playerRecord: "=",
-			data : "=",
-			showNPC : "=",
-			player : "="
+      playerRecord: "=?",
+			data : "=?",
+			showNPC : "=?",
+			player : "=?"
     },
 		link: function($scope, elem, attr){
 			console.log(attr);

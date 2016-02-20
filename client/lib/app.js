@@ -233,7 +233,24 @@ angular.module('player-tracker').directive('ptTop',function(){
 angular.module('player-tracker').directive('ptCondtions',function(){
 	return{
 		restrict: 'E',
-		templateUrl: 'templates/conditions.ng.html'
+		scope:{
+			conditions:"=",
+			player : "=",
+			show : "=",
+		},
+		link: function($scope, elem, attr){
+			console.log("SHOW VALUE",$scope.show);
+			$scope.pushCondition = (conditionIndex) =>{
+				console.log("pushing conditon", conditionIndex + " " + $scope.player);
+
+				$scope.show = false;
+
+				// if($scope.playerRecord.conditions.indexOf($scope.conditions[conditionIndex])==-1)$scope.playerRecord.conditions.push(angular.copy($scope.conditions[conditionIndex]));
+
+				Meteor.call("pushCondition", angular.copy($scope.conditions[conditionIndex]), $scope.player);
+			};
+		},
+		templateUrl: 'templates/conditions.html'
 	};
 });
 

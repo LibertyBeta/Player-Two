@@ -1,5 +1,6 @@
-<div class="overlay">
+<div class="overlay" ng-show="show">
   <div class="body">
+    {{showConditions}}
     <h2> Select Condition </h2>
     <ul>
       <li style="{{condition.style}}" ng-repeat="condition in conditions track by $index" ng-click="pushCondition($index)">

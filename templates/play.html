@@ -1,7 +1,8 @@
 <div class="container play">
   <pt-top></pt-top>
-  <pt-condtions ng-show="playCtrl.showConditons"></pt-condtions>
-  <div class="overlay" ng-show="playCtrl.game.battle && noInit()">
+  {{playCtrl.playerRecord._id}}
+  <pt-condtions show="playCtrl.showConditions" player="playCtrl.playerRecord._id" conditions="playCtrl.conditions"></pt-condtions>
+  <div class="overlay" ng-show="playCtrl.game.battle && playCtrl.noInit()">
     <div class="body">
       <h2> READY FOR COMBAT! </h2>
       <form ng-submit="playCtrl.readUp()">
@@ -78,10 +79,10 @@
       </div>
       <div class="nutural">
         <button class="nutural" ng-click="playCtrl.temporaryForm()">Temporary Hitpoints</button>
-        <button class="nutural" ng-click="playCtrl.showConditons = true;" >Add Condition</button>
+        <button class="nutural" ng-click="playCtrl.showConditions = true;" >Add Condition</button>
       </div>
       <div class="init" ng-hide="playCtrl.game.battle">
-        <button class="nutural" ng-click="iplayCtrl.nitInit()">Initiative</button>
+        <button class="nutural" ng-click="playCtrl.nitInit()">Initiative</button>
       </div>
       <div class="leave">
         <button ng-click="playCtrl.leave()">Leave Game</button>
