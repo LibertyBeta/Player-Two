@@ -136,8 +136,9 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 			})
 			.state('gmfight', {
 				url: '/gm/:gameId/fight',
-				templateUrl: 'templates/gm-fight.ng.html',
-				controller: 'GMFightCtrl',
+				// templateUrl: 'templates/gm-fight.ng.html',
+				// controller: 'GMFightCtrl',
+				template: '<gm-view></gm-view>',
 				currentUser: ($q) => {
 	        var deferred = $q.defer();
 
@@ -156,8 +157,9 @@ angular.module('player-tracker').config(['$urlRouterProvider', '$stateProvider',
 			})
 			.state('gm', {
 				url: '/gm/:gameId',
-				templateUrl: 'templates/gm.ng.html',
-				controller: 'GMCtrl',
+				// templateUrl: 'templates/gm.ng.html',
+				// controller: 'GMCtrl',
+				template: '<gm-view></gm-view>',
 				resolve:{
 					currentUser: ($q, $stateParams) => {
 		        var deferred = $q.defer();

@@ -10,7 +10,6 @@
 		</div>
 	</div>
 	<div class="conditions">
-		{{data.conditions}}
 		<div ng-repeat="ourCondition in data.conditions | filter:{name: '!!'}" ng-click="popCondition(ourCondition)">{{ourCondition.name}}</div>
 	</div>
 </div>
