@@ -206,7 +206,8 @@ Meteor.methods({
     if(dmCheck.dm){
       throw new Meteor.Error(503,"DM already exists");
     } else {
-      return Games.update({_id:gameId}, {$set:{dm:userId}});
+      Games.update({_id:gameId}, {$set:{dm:userId}});
+      return gameId;
     }
   },
 

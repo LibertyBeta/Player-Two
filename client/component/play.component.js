@@ -200,14 +200,15 @@ angular.module('player-tracker').directive('playView', function () {
 			};
 
 			this.becomeDM = () =>{
-				console.log("Trying to become DM.");
-				Meteor.call("changeGameDM", Meteor.userId(), $scope.game._id, function(error, result){
+				console.log("Trying to become DM of game." + this.game._id);
+				Meteor.call("changeGameDM", Meteor.userId(), this.game._id, function(error, result){
 					if(error){
 						//Handle the error
 						console.error(error);
 					} else {
+            console.log(result);
 						console.log("trying to path");
-						$location.path("/gm/"+$scope.game._id);
+						$location.path("/gm/"+result);
 						$scope.$apply();
 					}
 				});

@@ -1,4 +1,4 @@
-<div class="player-plate gm">
+<div class="player-plate gm" ng-repeat="partyMember in data">
 	<header> {{ partyMember.name }}</header>
 	<span class="left" ng-show="displayDetails || gm">{{partyMember.tempHealth.maxHealth + " " + partyMember.currentHealth}}</span>
 	<div class="health-bar">

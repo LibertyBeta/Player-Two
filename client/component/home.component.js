@@ -66,7 +66,7 @@ angular.module('player-tracker').directive('homeView', function () {
 						console.log(result);
 						// promise fulfilled
 						$location.path("/play/"+result).replace();
-						this.$apply();
+						$scope.$apply();
 					}
 				});
 			};

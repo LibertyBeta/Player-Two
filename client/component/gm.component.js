@@ -5,9 +5,9 @@ angular.module('player-tracker').directive('gmView',function(){
     controllerAs: 'gmCtrl',
 		controller: function ($scope, $stateParams, $meteor, $location, $reactive) {
 			$reactive(this).attach($scope);
-			$scope.url = $location.absUrl();
-			$scope.gameId = $stateParams.gameId;
-			$scope.conditions = [
+			this.url = $location.absUrl();
+			this.gameId = $stateParams.gameId;
+			this.conditions = [
 				{
 					'style':'condition-posion',
 					// 'hint':"YOU'RE POSIONED FOOL!",
@@ -29,19 +29,19 @@ angular.module('player-tracker').directive('gmView',function(){
 					'name':'prone',
 				}
 			];
-			// $scope.subscribe("players", () => [$scope.gameId]);
-			$scope.controlsHide = false;
-			$scope.npsHide = false;
-			$scope.subscribe("players", () => {
-				return [$scope.getReactively("gameId")]
+			// this.subscribe("players", () => [this.gameId]);
+			this.controlsHide = false;
+			this.npsHide = false;
+			this.subscribe("players", () => {
+				return [this.getReactively("gameId")]
 			});
-			$scope.subscribe("game", () => [$scope.gameId]);
-			// $scope.subscribe("playerRecord", () => [Meteor.userId()]);
+			this.subscribe("game", () => [this.gameId]);
+			// this.subscribe("playerRecord", () => [Meteor.userId()]);
 
-			$scope.showConditons = false;
-			$scope.helpers({
+			this.showConditons = false;
+			this.helpers({
 				game(){
-					return Games.findOne({_id:$scope.gameId});
+					return Games.findOne({_id:this.gameId});
 				},
 				players: () =>{
 					return Players.find(
@@ -49,15 +49,15 @@ angular.module('player-tracker').directive('gmView',function(){
 						{sort:{ 'battle.round' : 1, 'battle.init': -1 }});
 				}
 				// playerRecord(){
-				// 		return Players.findOne({game: $scope.gameId, owner: Meteor.userId()});
+				// 		return Players.findOne({game: this.gameId, owner: Meteor.userId()});
 				// }
 			});
-			console.log($scope.players);
-			// $scope.autorun(function(){
-			// 	$scope.pageTitle = $scope.game.name;
+			console.log(this.players);
+			// this.autorun(function(){
+			// 	this.pageTitle = this.game.name;
 			// })
-			$scope.autorun(() => {
-				// console.log(`current search string is: `, $scope.game.name);
+			this.autorun(() => {
+				// console.log(`current search string is: `, this.game.name);
 			});
 			$scope.$watch("game.name", function(newValue, oldValue){
 
@@ -66,9 +66,9 @@ angular.module('player-tracker').directive('gmView',function(){
 				}
 			});
 
-			$scope.addNPC = function(){
-				$scope.npc.battle = {init:$scope.npc.init, round:$scope.game.battle.round};
-				Meteor.call("addNPC", $scope.npc, $scope.game._id, function(error, result){
+			this.addNPC = function(){
+				this.npc.battle = {init:this.npc.init, round:this.game.battle.round};
+				Meteor.call("addNPC", this.npc, this.game._id, function(error, result){
 					if(error){
 						//Handle the error
 						console.error(error);
@@ -78,65 +78,65 @@ angular.module('player-tracker').directive('gmView',function(){
 				});
 			};
 
-			$scope.callForInit = function(){
-				Meteor.call("startBattle", $scope.game._id, function(error, result){
+			this.callForInit = function(){
+				Meteor.call("startBattle", this.game._id, function(error, result){
 					console.log(error);
 					console.log(result);
 				});
 			};
 
-			$scope.toggleDisplayNPC = function(){
-				Meteor.call("toggleNPC", $scope.game._id, function(error, result){
+			this.toggleDisplayNPC = function(){
+				Meteor.call("toggleNPC", this.game._id, function(error, result){
 					console.log(error);
 					console.log(result);
 				});
 			};
 
-			$scope.endTurn = function(){
-				console.log($scope.players[0]._id);
-				Meteor.call("endRound", $scope.players[0]._id, function(error, result){
+			this.endTurn = function(){
+				console.log(this.players[0]._id);
+				Meteor.call("endRound", this.players[0]._id, function(error, result){
 					if(error)console.error(error);
 				});
 			};
 
-			$scope.endRound = function(){
-				Meteor.call("advanceRound", $scope.gameId, $scope.players[$scope.players.lenght-1].battle.round, function(error, result){
+			this.endRound = function(){
+				Meteor.call("advanceRound", this.gameId, this.players[this.players.lenght-1].battle.round, function(error, result){
 					if(error) console.error(error);
 				})
 			};
 
-			$scope.endCombat = function(){
-				Meteor.call('endBattle', $scope.gameId, function(error, result){});
+			this.endCombat = function(){
+				Meteor.call('endBattle', this.gameId, function(error, result){});
 			}
 
-			$scope.conditionPopover = function(id){
-				$scope.tempId = id;
-				$scope.showConditons = true;
+			this.conditionPopover = function(id){
+				this.tempId = id;
+				this.showConditons = true;
 			}
 
-			$scope.pushCondition = function(conditionIndex){
+			this.pushCondition = function(conditionIndex){
 				console.log("pushing conditon");
 
-				Meteor.call("pushCondition", angular.copy($scope.conditions[conditionIndex]), $scope.tempId);
-				$scope.tempId = null;
-				$scope.showConditons = false;
+				Meteor.call("pushCondition", angular.copy(this.conditions[conditionIndex]), this.tempId);
+				this.tempId = null;
+				this.showConditons = false;
 			};
 
-			$scope.toggleControls = function(){
+			this.toggleControls = function(){
 				console.log("ARGE");
-				if($scope.controlsHide){
-					$scope.controlsHide = false;
+				if(this.controlsHide){
+					this.controlsHide = false;
 				} else {
-					$scope.controlsHide = true;
+					this.controlsHide = true;
 				}
 			}
 
-			$scope.toggleNPC = function(){
+			this.toggleNPC = function(){
 				console.log("ARGE");
-				if($scope.npcHide){
-					$scope.npcHide = false;
+				if(this.npcHide){
+					this.npcHide = false;
 				} else {
-					$scope.npcHide = true;
+					this.npcHide = true;
 				}
 			}
 
