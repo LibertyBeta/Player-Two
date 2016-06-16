@@ -1,0 +1,46 @@
+<div class="container play">
+  <top-bar [pageTitle]="gameName"></top-bar>
+  <!-- <pt-condtions show="showConditions" player="playerRecord._id" conditions="conditions"></pt-condtions> -->
+  <div class="overlay" [hidden]="!battle && !noInit">
+    <div class="body">
+      <h2> READY FOR COMBAT! </h2>
+      <form (submit)="readUp()">
+        <input type='number' ng-model='battle.roll' placeholder="Initi">
+        <button (click)="setInit();"> Initiative </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="overlay" *ngIf="dmWarn">
+    <div class="body">
+      <h2>WARNING, THIS CHANGE CAN'T BE UNDONE. </h2>
+      <button class="negative" (click)="dmWarn = false">Cancel</button>
+      <button class="positive" (click)="becomeDM()">BECOME THE DM!</button>
+    </div>
+  </div>
+  {{playerLoaded}}
+  {{player.name}}
+  <div id="player-wrapper" *ngIf="!playerLoaded">
+    <div id="add-player">
+      <header>Add Player</header>
+      <div class="form">
+        <form (submit)="joinGame()">
+          <input type="text" [(ngModel)]="playerForm.name" required placeholder="You Character Name">
+          <input type="number" [(ngModel)]="playerForm.currentHealth" required placeholder="Current Health">
+          <input type="number" [(ngModel)]="playerForm.maxHealth" required placeholder="Max Health">
+          <button> Join </button>
+        </form>
+      </div>
+      <div class="form" [hidden]="game.dm === ''">
+        <button type="feature" (click)="dmWarn = true"> Become Game DM </button>
+      </div>
+    </div>
+  </div>
+
+  <my-plate [player]="player" *ngIf="playerLoaded"> Loading...</my-plate>
+  <hr/>
+  <div id="plate-grid" class="wrapper">
+    <player-plate *ngFor="let doc of otherPlayers" [player]="doc"></player-plate>
+  </div>
+  <!-- {{gameId}} -->
+</div>

@@ -1,0 +1,37 @@
+<div class='container'>
+	<top-bar [pageTitle]="'Home Page'"></top-bar>
+	<div class='games'>
+		<div class="controls">
+			<div id="add">
+				<button class='main' (click)='create = true' [hidden]='create'> + New Game</button>
+				<form name="otherForm" (submit)='createForm()' [hidden]='!create'>
+					<input type='text' [(ngModel)]="gameTitle" placeholder='Game Name Here'>
+					<button class='form' type='submit'>Start</button>
+				</form>
+			</div>
+			<div id="join">
+				<button class='main' (click)='join = true' [hidden]='join'> + Join Game</button>
+		    <form name="theForm" (submit)='joinForm()' [hidden]='!join'>
+		      <input type='text' placeholder='Put your game id here'>
+		      <button class='form' type='submit'>Join</button>
+		    </form>
+		  </div>
+		</div>
+		<div class='game-list'>
+
+      <ul class="gameList">
+        <li *ngFor="let userGame of games" >
+					<div class="name">{{userGame.name}}</div>
+					<a class="gm" [hidden]="userGame.dm == userId" href="/gm/{{userGame._id}}">gm</a>
+					<a class="play-link" [hidden]="userGame.dm != userId" [routerLink]="['/play/',userGame._id]">Play</a>
+          <a class="display" href="/display/{{userGame._id}}">Display</a>
+					<div class="invite">{{userGame.inviteCode}}</div>
+        </li>
+				<li [hidden]="hasGames">
+					No Games. Why don't you start one.
+				</li>
+      </ul>
+		</div>
+
+	</div>
+</div>

@@ -17,7 +17,7 @@
 		width: 100%;
 		height: $height - 10px;
 		position: relative;
-		transition: width .3s linear;
+		transition: width 55ms linear;
 		&.good{
 			background:$goodHealth;
 		}
@@ -40,7 +40,7 @@
 		height: $height - 10px;
 		width: 0px;
 
-		transition: width .3s linear;
+		transition: width 55ms linear;
 			&.temp{
 				left:0;
 				background: $nutural;

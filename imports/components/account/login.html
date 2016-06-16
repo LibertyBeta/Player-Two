@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="form">
+    <form id="loginForm" name="loginForm" class="user-form" (submit)='submit()' novalidate>
+      <div class="row"><label>User</label> <input [(ngModel)]="user" type="user" name="user" required="required"></div>
+      <div class="row"><label>Password</label> <input [(ngModel)]="password" type="password" name="password"  required="required"></div>
+      <!-- <p class="error" ng-show="message"> {{message}}</p> -->
+      <p><input class="button" type="submit" value="Login"></p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="player">
+  {{player.currentHealth}}
+  <header> {{ player.name }}</header>
+	<span class="left"> {{player.currentHealth}}</span>
+  <hp-bar [currentHealth]='player.currentHealth' [maxHealth]='player.maxHealth' [currentTemp]='0' [maxTemp]='0'></hp-bar>
+  <div class="controls">
+    <div class="temp" *ngIf="temp">
+      <input type="number" [(ngModel)]="tempInput">
+      <button (click)="setTemp()">Set Temp Health</button>
+    </div>
+    <div class="negative">
+      <!-- <button (click)="decreaseHealth(10)"> - 10 </button> -->
+      <!-- <button (click)="decreaseHealth(1)"> - </button> -->
+      <!-- <button (click)="decreaseHealth(1)" hm-press="healthDialogShow('loss')"></button> -->
+      <button (click)="removeHealth()"></button>
+    </div>
+    <div class="inputs">
+      <!-- <button (click)="decreaseHealth(10)"> - 10 </button> -->
+      <!-- <button (click)="decreaseHealth(1)"> - </button> -->
+      <input type="number" [(ngModel)]="dmgInput" placeholder="dmg"/>
+    </div>
+    <div class="positive">
+      <!-- <button (click)="increaseHealth(1)"> + </button> -->
+      <!-- <button (click)="increaseHealth(10)"> + 10</button> -->
+      <!-- <button (click)="increaseHealth(1)" hm-press="healthDialogShow('gain')"></button> -->
+      <button (click)="addHealth()"></button>
+    </div>
+    <div class="nutural">
+      <button class="nutural" (click)="temp = true">Temporary Hitpoints</button>
+      <button class="nutural" (click)="showConditions = true;" >Add Condition</button>
+    </div>
+    <div class="init" [hidden]="battle">
+      <button class="nutural" (click)="initInit()">Initiative</button>
+    </div>
+    <div class="leave">
+      <button (click)="leave()">Leave Game</button>
+    </div>
+  </div>
+
+  <!-- <div id="battle" [hidden]="game.battle">
+    <div class="messages">
+      <ul>
+        <li class="position-block" ng-repeat="partyMember in players"><div class="marker" [hidden]="partyMember._id == playerRecord._id"></div></li>
+      </ul>
+    </div>
+    <div class="controls" [hidden]="battlePosition() == 1">
+      <button (click)="endRound()"> COMPLETE ROUND </button>
+      <button (click)="endBattle()"> End Fight </button>
+    </div>
+  </div> -->
+</div>
