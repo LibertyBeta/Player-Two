@@ -7,7 +7,6 @@
 
 angularui:angular-ui-router
 angular:angular-touch
-standard-minifiers
 meteor-base
 mobile-experience
 mongo
@@ -29,3 +28,5 @@ wolves:bourbon
 wolves:neat
 hammer:hammer
 guihash:angular-hammer
+standard-minifier-css
+standard-minifier-js
